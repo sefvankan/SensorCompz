@@ -9,8 +9,11 @@ subprocess.call(['./scpLua.sh'])
 f = open("LuaUPnP.log", "r")
 
 import datetime
+now = datetime.datetime.now()
+output_title = now.strftime("%m-%d_%H.%M.%S")
+
 # Creates output file
-nf = open("logAsOf "+str(datetime.datetime.now())+".log", "w")
+nf = open("log_"+output_title+".log", "w")
 
 for line in reversed(f.readlines()):
     # Locates triggered distance sensor lines and saves index of
