@@ -1,11 +1,4 @@
-now	distance	1100
-14:55:00	distance	23
-09:25:19	motion	1
-00:03:00	distance	23
-23:48:40	motion	1
-23:46:00	motion	1
-23:32:00	motion	1
-23:26:02	motion	1
-23:26:01	distance	98
-23:26:00	motion	1
-23:23:30	distance	100
+21:22:11    Motion    115
+21:22:14    Motion    115
+21:22:15    Motion    115
+21:22:18    Motion    115
