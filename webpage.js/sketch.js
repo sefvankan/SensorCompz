@@ -4,40 +4,26 @@ var curLine;
 var elapsed;
 var wait;
 
+// sound files
 var hello;
 var boom;
 var belair;
 var eden;
 
+// filter objects
 var edenHpf;
 var belairLpf;
 var oldTime;
 
-function readTextFile(file) {
-v
-}
-
-// function Entry(t, i, v) {
-//   this.time = t;
-//   this.id = i;
-//   this.value = v;
-  
-//   this.getTime = function() {
-//     return this.time;
-//   };
-//   this.getId = function() {
-//     return this.id;
-//   };
-//   this.getValue = function() {
-//     return this.value;
-//   };
-// }
+// to serve as a hashmap with key: ID; value: sound files
+var soundLibrary;
 
 function Time(h, m, s) {  
+// function Time(h, m, s, ms) {  
     this.hr = h;
     this.min = m;
     this.sec = s;
-    
+    // this.mil = ms;
   this.getHr = function() {
     return this.hr;
   };
@@ -47,44 +33,16 @@ function Time(h, m, s) {
   this.getSec = function() {
     return this.sec;
   };
+  // this.getMil = function() {
+  //   return this.mil;
+  // };
   this.getAbsoluteSec = function() {
     return this.sec+this.min*60+this.hr*60*60;
-  }
+  };
+  // this.getAbsoluteMil = function() {
+  //   return 1000*this.getAbsoluteSec()+this.mil;
+  // };
 }
-
-// // return -1 if time1 < time2
-// // return 0 if time1 == time2
-// // return 1 if time1 > time2
-// function compare(time1, time2) {
-//   var hr1 = time1.getHr();
-//   var min1 = time1.getMin();
-//   var sec1 = time1.getSec();
-  
-//   var hr2 = time2.getHr();
-//   var min2 = time2.getMin();
-//   var sec2 = time2.getSec();
-  
-//   if (hr1 < hr2) {
-//     return -1;
-//   } else if (hr1 == hr2) {
-//     if (min1 < min2) {
-//       return -1;
-//     } else if (min1 > min2) {
-//       return 1;
-//     } else {
-//       if (sec1 < sec2) {
-//         return -1;
-//       } else if (sec1 > sec2) {
-//         return 1;
-//       } else {
-//         return 0;
-//       }
-//     }
-//     // hr1 < hr2
-//   } else {
-//     return 1;
-//   }
-// }
 
 function getTime(timeString) {
   if (timeString === "now") {
@@ -95,10 +53,12 @@ function getTime(timeString) {
   var h = int(timeArr[0]);
   var m = int(timeArr[1]);
   var s = int(timeArr[2]);
-  console.log(m);
-  console.log(s);
   
-  return Time(h, m, s);
+  return new Time(h, m, s);
+}
+
+function playSound(soundFile) {
+  soundFile.play();
 }
 
 function preload() {
@@ -107,6 +67,10 @@ function preload() {
   boom = loadSound('1.mp3');
   eden = loadSound('eden.mp3');
   belair = loadSound('belair.mp3');
+  
+  soundLibrary = new Array();
+  soundLibrary['Motion'] = belair;
+  soundLibrary['Distance'] = eden;
 }
 
 
@@ -124,6 +88,7 @@ function setup() {
   //oldTime = Time(hour(), minute(), second());
   oldTime = new Time(21, 22, 10);
   wait = 1000;
+
   loop();
 }      
 
@@ -138,15 +103,14 @@ function draw() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
             logFile = xmlhttp.responseText.split('\n');
             for (var i = 0; i < logFile.length; i++) {
-              var logLine = logFile[i].split("    ");
+              var entry = logFile[i].split("    ");
               
-              console.log(logLine[0]);
-              console.log(logLine[1]);
-              console.log(logLine[2]);
-              var logTime = getTime(logLine[0]);
-              console.log(logLine[2]);
-              var delay = determineDelay(oldTime,logTime)*1000;
-              setTimeout(belair.play(),delay);
+              var entryTime = getTime(entry[0]);
+              var entryID = entry[1];
+              
+              var delay = determineDelay(oldTime,entryTime)*1000;
+              console.log(delay);
+              setTimeout(playSound, delay, soundLibrary[entryID]);
               
             }
         }
