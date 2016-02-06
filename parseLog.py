@@ -30,9 +30,9 @@ for line in reversed(f.readlines()):
 		sensorID = "115"
 		timeStamp = ""
 		if line[19] == ".":
-			timeStamp = line[12:19]
+			timeStamp = line[12:23]
 		else:
-			timeStamp = line[12:20]
+			timeStamp = line[12:24]
 		# Checks if we have overlapped with previous log file
 		if int(timeStamp.replace(":", "")) < int(stopTime.replace(":","")):
 			break
@@ -44,9 +44,9 @@ for line in reversed(f.readlines()):
 		sensorID = "117"
 		timeStamp = ""
 		if line[19] == ".":
-			timeStamp = line[12:19]
+			timeStamp = line[12:23]
 		else:
-			timeStamp = line[12:20]
+			timeStamp = line[12:24]
 		# Checks if we have overlapped with previous log file
 		if int(timeStamp.replace(":", "")) < int(stopTime.replace(":","")):
 			break
@@ -63,9 +63,9 @@ for line in reversed(f.readlines()):
 		sensorID = "118"
 		timeStamp = ""
 		if line[19] == ".":
-			timeStamp = line[12:19]
+			timeStamp = line[12:23]
 		else:
-			timeStamp = line[12:20]
+			timeStamp = line[12:24]
 		# Checks if we have overlapped with previous log file
 		if int(timeStamp.replace(":", "")) < int(stopTime.replace(":","")):
 			break
