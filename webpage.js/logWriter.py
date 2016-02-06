@@ -10,7 +10,7 @@ def getTime():
 
 delay = 3
 
-sensorList = ['Distance', 'Motion', 'Color']
+sensorList = ['Distance1', 'Distance2', 'Distance3', 'Distance4', 'Motion1', 'Color1']
 
 while True:
 	curTime = getTime()
@@ -29,10 +29,11 @@ while True:
 			for indx, t in enumerate(timeList):
 				timeToWrite = t.strftime('%H:%M:%S:%f')[:-3]
 				sensorID = random.randint(0,len(sensorList)-1)
+				sensorValue = str(random.randint(0,300))
 				if indx != len(timeList)-1:
-					entry = timeToWrite+'    '+sensorList[sensorID]+'    '+'100'+'\n'
+					entry = timeToWrite+'    '+sensorList[sensorID]+'    '+sensorValue+'\n'
 				else:
-					entry = timeToWrite+'    '+sensorList[sensorID]+'    '+'100'
+					entry = timeToWrite+'    '+sensorList[sensorID]+'    '+sensorValue
 				entryList.append(entry)
 			for e in entryList:
 				print e
