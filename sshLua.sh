@@ -12,10 +12,10 @@ expect {
   }
 }
 
-set found= true
+set found true ;
 
-while $found {
-	scp vankans@137.22.5.59:/Desktop/Log\ parsing/LuaUPnP.log .
-	sleep 5
+while {$found} {
+	# spawn scp vankans@137.22.5.59:/Desktop/Log\ parsing/LuaUPnP.log .
+	puts "Hello World"
 }
 interact
