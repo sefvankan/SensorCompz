@@ -17,12 +17,15 @@ while True:
 	print '\nNOW: '+curTime.strftime('%H:%M:%S:%f')[:-3]+'\n'
 
 	with open('logFileUpdating.txt', 'w') as f:
-		numEntries = random.randint(0,delay)
+		# numEntries = random.randint(0,delay)
+		numEntries = delay
 		timeList = []
 		entryList = []
 		for i in xrange(0,numEntries+1):
-			secOffset = random.randint(0,delay-1)
-			millisOffset = random.randint(0,999)
+			# secOffset = random.randint(0,delay-1)
+			secOffset = i;
+			# millisOffset = random.randint(0,999)
+			millisOffset = 0;
 			newTime = curTime + datetime.timedelta(seconds = secOffset)
 			newTime += datetime.timedelta(milliseconds = millisOffset)
 			timeList.append(newTime)
