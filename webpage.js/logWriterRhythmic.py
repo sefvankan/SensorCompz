@@ -17,19 +17,21 @@ while True:
 	print '\nNOW: '+curTime.strftime('%H:%M:%S:%f')[:-3]+'\n'
 
 	with open('logFileUpdating.txt', 'w') as f:
-		numEntries = random.randint(0,delay)
+		# numEntries = random.randint(0,delay)
+		numEntries = delay
 		timeList = []
 		entryList = []
-		for i in xrange(0,numEntries+1):
-			secOffset = random.randint(0,delay-1)
-			millisOffset = random.randint(0,999)
+		for i in xrange(0,numEntries):
+			# secOffset = random.randint(0,delay-1)
+			secOffset = i;
+			# millisOffset = random.randint(0,999)
+			millisOffset = 0;
 			newTime = curTime + datetime.timedelta(seconds = secOffset)
 			newTime += datetime.timedelta(milliseconds = millisOffset)
 			timeList.append(newTime)
 		timeList.sort()
 		if len(timeList) > 0:
 			for indx, t in enumerate(timeList):
-				sensorValue = str(random.randint(0,99))
 				timeToWrite = t.strftime('%H:%M:%S:%f')[:-3]
 				sensorID = random.randint(0,len(sensorList)-1)
 				sensorValue = str(random.randint(0,300))
