@@ -214,8 +214,18 @@ function outputMotion(id) {
 
 function outputDistance(id, distance) {
 	if (distance > 75) {
-		soundLibrary['Distance'+'-'+id][0].play();
+		if (distance % 3 == 1) {
+			soundLibrary['Distance'+'-'+id][0].pan(-.35);
+		} else if (distance % 3 == 2) {
+			soundLibrary['Distance'+'-'+id][0].pan(.35);
+		}
+		soundLibrary['Distance'+'-'+id][0].play();	
 	} else {
+		if (distance % 3 == 1) {
+			soundLibrary['Distance'+'-'+id][1].pan(-.85);
+		} else if (distance % 3 == 2) {
+			soundLibrary['Distance'+'-'+id][1].pan(.85);
+		}
 		soundLibrary['Distance'+'-'+id][1].play();	
 	}
 	
