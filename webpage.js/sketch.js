@@ -5,6 +5,8 @@ var elapsed;
 var wait;
 var now;
 
+var clock;
+
 // sound files
 var hello;
 var boom;
@@ -35,47 +37,44 @@ var soundG21;
 
 
 function dateConvert(date) {
-return new Time(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
+	return new Time(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
 }
 
 // function Time(h, m, s) {
 function Time(h, m, s, ms) {
-    this.hr = int(h);
-    this.min = int(m);
-    this.sec = int(s);
-    this.mil = int(ms);
-  this.getHr = function() {
-    return this.hr;
-  };
-  this.getMin = function() {
-    return this.min;
-  };
-  this.getSec = function() {
-    return this.sec;
-  };
-  this.getMil = function() {
-    return this.mil;
-  };
-  this.getAbsoluteSec = function() {
-    return this.sec+this.min*60+this.hr*60*60;
-  };
-  this.getAbsoluteMil = function() {
-    return 1000*this.getAbsoluteSec()+this.mil;
-  };
+	this.hr = int(h);
+	this.min = int(m);
+	this.sec = int(s);
+	this.mil = int(ms);
+	this.getHr = function() {
+		return this.hr;
+	};
+	this.getMin = function() {
+		return this.min;
+	};
+	this.getSec = function() {
+		return this.sec;
+	};
+	this.getMil = function() {
+		return this.mil;
+	};
+	this.getAbsoluteSec = function() {
+		return this.sec+this.min*60+this.hr*60*60;
+	};
+	this.getAbsoluteMil = function() {
+		return 1000*this.getAbsoluteSec()+this.mil;
+	};
 }
 
 function getTime(timeString) {
-  if (timeString === "now") {
-    return Time(hour(), minute(), second(), 0);
-  }
-  var timeArr = timeString.split(":");
+	var timeArr = timeString.split(":");
 
-  var h = int(timeArr[0]);
-  var m = int(timeArr[1]);
-  var s = int(timeArr[2]);
-  var ms = int(timeArr[3]);
+	var h = timeArr[0];
+	var m = timeArr[1];
+	var s = timeArr[2];
+	var ms = timeArr[3];
 
-  return new Time(h, m, s, ms);
+	return new Time(h, m, s, ms);
 }
 
 function determineOutput(entry) {
@@ -147,12 +146,12 @@ function outputDistance(id, distance) {
 }
 
 function playSound(soundFile) {
-  soundFile.play();
+	soundFile.play();
 }
 
 function preload() {
-  // Load a soundfile from the /data folder of the sketch and play it back
-  soundC11 = loadSound('sounds/C/C-1-1.mp3');
+	// Load a soundfile from the /data folder of the sketch and play it back
+	soundC11 = loadSound('sounds/C/C-1-1.mp3');
 	soundC17 = loadSound('sounds/C/C-1-7.mp3');
 	soundC21 = loadSound('sounds/C/C-1-5.mp3');
 	soundD11 = loadSound('sounds/D/D-1-1.mp3');
@@ -162,21 +161,20 @@ function preload() {
 	soundG17 = loadSound('sounds/G/G-1-7.mp3');
 	soundG21 = loadSound('sounds/G/G-1-5.mp3');
 
-  whiteLibrary = new Array();
-  whiteLibrary['Motion'] = soundC11;
-  whiteLibrary['Distance'] = soundC17;
-  whiteLibrary['Color'] = soundC21;
+	whiteLibrary = new Array();
+	whiteLibrary['Motion'] = soundC11;
+	whiteLibrary['Distance'] = soundC17;
+	whiteLibrary['Color'] = soundC21;
 
 	grayLibrary = new Array();
-  grayLibrary['Motion'] = soundD11;
-  grayLibrary['Distance'] = soundD17;
-  grayLibrary['Color'] = soundD21;
+	grayLibrary['Motion'] = soundD11;
+	grayLibrary['Distance'] = soundD17;
+	grayLibrary['Color'] = soundD21;
 
 	blackLibrary = new Array();
-  blackLibrary['Motion'] = soundG11;
-  blackLibrary['Distance'] = soundG17;
-  blackLibrary['Color'] = soundG21;
-
+	blackLibrary['Motion'] = soundG11;
+	blackLibrary['Distance'] = soundG17;
+	blackLibrary['Color'] = soundG21;
 }
 
 
@@ -185,55 +183,55 @@ function determineDelay(pullTime,entryTime) {
 }
 
 function setup() {
-  createCanvas(1400,900);
-  background(255);
-  textSize(32);
-  text("word", 10, 30);
-  fill(0, 102, 153);
-  elapsed = millis();
-  // pullTime = new Time(hour(), minute(), second(), 0);
+	createCanvas(1400,900);
+	background(255);
+	textSize(32);
+	text("word", 10, 30);
+	fill(0, 102, 153);
+	elapsed = millis();
+	// pullTime = new Time(hour(), minute(), second(), 0);
 	now = new Date();
 	pullTime = new dateConvert(now);
 
-  wait = 3000;
+	wait = 3000;
 	currentColor = 'White';
 	soundLibrary = whiteLibrary;
 
-  loop();
+	loop();
 }
 
 function draw() {
-  if (millis() - elapsed >= wait) {
+	if (millis() - elapsed >= wait) {
 
-    elapsed = millis();
+		elapsed = millis();
 
-    var xmlhttp = new XMLHttpRequest();
-    var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
-    var logFile;
-    xmlhttp.onreadystatechange = function() {
-        if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						pullTime = new Time(hour(), minute(), second(), 0);
-						now = new Date();
-            logFile = xmlhttp.responseText.split('\n');
-            for (var i = 0; i < logFile.length; i++) {
-              //console.log(logFile[i])
-              var entry = logFile[i].split("    ");
-              var entryTime = getTime(entry[0]);
-              var delay = determineDelay(pullTime,entryTime);
-							console.log(delay)
+		var xmlhttp = new XMLHttpRequest();
+		var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
+		var logFile;
+		xmlhttp.onreadystatechange = function() {
+			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+				pullTime = new Time(hour(), minute(), second(), 0);
+				now = new Date();
+				logFile = xmlhttp.responseText.split('\n');
+				for (var i = 0; i < logFile.length; i++) {
+					//console.log(logFile[i])
+					var entry = logFile[i].split("    ");
+					var entryTime = getTime(entry[0]);
+					var delay = determineDelay(pullTime,entryTime);
+					console.log(delay)
 
-							//pullTime = new dateConvert(now);
-							if (delay > 0) {
-									setTimeout(determineOutput, delay, entry);
-							}
-              if (delay < 0) {
-                console.log('WEIRD!!!! delay < 0:    '+delay)
-							//	elapsed += delay;
-              }
-            }
-        }
-    };
-    xmlhttp.open("GET", url, true);
-    xmlhttp.send();
-  }
+					// pullTime = new dateConvert(now);
+					if (delay > 0) {
+						setTimeout(determineOutput, delay, entry);
+					}
+					if (delay < 0) {
+						console.log('WEIRD!!!! delay < 0:    '+delay)
+						// elapsed += delay;
+				  	}
+				}
+			}
+		};
+		xmlhttp.open("GET", url, true);
+		xmlhttp.send();
+	}
 }
