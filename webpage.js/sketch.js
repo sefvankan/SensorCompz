@@ -1,11 +1,16 @@
 "use strict"
+
 var reader;
 var curLine;
 var elapsed;
 var wait;
+var startTime
 var now;
+var offset;
+var noOffset;
 
-var clock;
+var nextSound;
+var soundQueue;
 
 // sound files
 var hello;
@@ -66,6 +71,50 @@ function Time(h, m, s, ms) {
 	};
 }
 
+function Entry(t, i, s, v) {
+	this.time = t;
+	this.id = i;
+	this.sensor = s;
+	this.value = v;
+
+	this.getTime = function() {
+		return this.time;
+	};
+	this.getSensor = function() {
+		return this.sensor;
+	};
+	this.getID = function() {
+		return this.id;
+	};
+	this.getValue = function() {
+		return this.value;
+	};
+}
+
+function SoundToPlay(entry, delay) {
+	this.entry = entry;
+	this.sensor = entry[1];
+	this.id = entry[2];
+	this.value = int(entry[3]);
+	this.delay = int(delay);
+
+	this.getEntry = function () {
+		return this.entry;
+	}
+	this.getSensor = function() {
+		return this.sensor;
+	}
+	this.getID = function() {
+		return this.id;
+	}
+	this.getValue = function() {
+		return this.value;
+	}
+	this.getDelay = function() {
+		return this.delay;
+	}
+}
+
 function getTime(timeString) {
 	var timeArr = timeString.split(":");
 
@@ -77,17 +126,16 @@ function getTime(timeString) {
 	return new Time(h, m, s, ms);
 }
 
-function determineOutput(entry) {
-	var sensorType = entry[1];
-	switch (sensorType) {
+function determineOutput(trigger) {
+	switch (trigger.getSensor()) {
 		case 'Distance':
-			outputDistance(entry[2],entry[3]);
+			outputDistance(trigger.getID(), trigger.getValue());
 			break;
 		case 'Color':
-			outputColor(entry[3]);
+			outputColor(trigger.getID(), trigger.getValue());
 			break;
 		case 'Motion':
-			outputMotion(entry[2]);
+			outputMotion(trigger.getID());
 			break;
 	}
 }
@@ -126,7 +174,7 @@ function changePalette(color) {
 	}
 }
 
-function outputColor(rgb) {
+function outputColor(id, rgb) {
 	var newColor = getColor(rgb);
 	if(newColor != currentColor){
 		console.log("COLOR CHANGE WUSSUP")
@@ -183,25 +231,46 @@ function determineDelay(pullTime,entryTime) {
 }
 
 function setup() {
+	now = new Date();
+	startTime = new dateConvert(now);
+
 	createCanvas(1400,900);
 	background(255);
 	textSize(32);
 	text("word", 10, 30);
 	fill(0, 102, 153);
 	elapsed = millis();
-	// pullTime = new Time(hour(), minute(), second(), 0);
-	now = new Date();
-	pullTime = new dateConvert(now);
+	
+	offset = 0;
+	noOffset = true;
 
 	wait = 3000;
 	currentColor = 'White';
 	soundLibrary = whiteLibrary;
 
+	soundQueue = [];
+
 	loop();
 }
 
 function draw() {
+	var cur = new Date();
+	var curTime = dateConvert(cur);
+	var diff = curTime.getAbsoluteMil() - startTime.getAbsoluteMil();
+
+	if (soundQueue.length > 0) {
+		// if it's time to play the next sound
+		if (millis() - offset >= soundQueue[0].getDelay()) {
+			// shift off sound from queue
+			var toPlay = soundQueue.shift();
+			console.log(toPlay.getEntry());
+			// play the sound
+			determineOutput(toPlay);
+		}
+	}
+
 	if (millis() - elapsed >= wait) {
+		console.log('------------------');
 
 		elapsed = millis();
 
@@ -210,23 +279,32 @@ function draw() {
 		var logFile;
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				pullTime = new Time(hour(), minute(), second(), 0);
-				now = new Date();
 				logFile = xmlhttp.responseText.split('\n');
 				for (var i = 0; i < logFile.length; i++) {
-					//console.log(logFile[i])
+					console.log(logFile[i])
 					var entry = logFile[i].split("    ");
 					var entryTime = getTime(entry[0]);
-					var delay = determineDelay(pullTime,entryTime);
-					console.log(delay)
+					var entrySensor = entry[1];
+					var entryID = entry[2];
+					var entryValue = entry[3];
 
-					// pullTime = new dateConvert(now);
+					var delay = determineDelay(startTime,entryTime);
+
+					// determine offset for checking when to play sound
+					// only set offset for first sound
+					if (noOffset) {
+						offset = millis() - delay;
+						noOffset = false;
+					}
+					
+					nextSound = new SoundToPlay(entry, delay);
 					if (delay > 0) {
-						setTimeout(determineOutput, delay, entry);
+						soundQueue.push(nextSound);
 					}
 					if (delay < 0) {
 						console.log('WEIRD!!!! delay < 0:    '+delay)
-						// elapsed += delay;
+						soundQueue.push(nextSound);
+						elapsed += delay;
 				  	}
 				}
 			}
