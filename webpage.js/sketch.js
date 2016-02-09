@@ -45,6 +45,19 @@ var soundCp15;
 var soundCp16;
 var soundCp21;
 
+var sandmanLongCmp11;
+var sandmanLongCmp12;
+var sandmanLongCmp13;
+var sandmanLongCmp14;
+var sandmanLongCmp15;
+var sandmanLongCmp21;
+var sandmanShortCmp11;
+var sandmanShortCmp12;
+var sandmanShortCmp13;
+var sandmanShortCmp14;
+var sandmanShortCmp15;
+var sandmanShortCmp21;
+
 
 function dateConvert(date) {
 	return new Time(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
@@ -131,6 +144,7 @@ function getTime(timeString) {
 	return new Time(h, m, s, ms);
 }
 
+// trigger is a SoundToPlay object
 function determineOutput(trigger) {
 	switch (trigger.getSensor()) {
 		case 'Distance':
@@ -194,11 +208,21 @@ function outputMotion(id) {
 	soundLibrary['Motion'+'-'+id].play();
 }
 
+// function outputDistance(id, distance) {
+// 	soundLibrary['Distance'+'-'+id].play();
+// }
+
 function outputDistance(id, distance) {
-	soundLibrary['Distance'+'-'+id].play();
+	if (distance > 75) {
+		soundLibrary['Distance'+'-'+id][0].play();
+	} else {
+		soundLibrary['Distance'+'-'+id][1].play();	
+	}
+	
 }
 
 function preload() {
+
 	// Load a soundfile from the /data folder of the sketch and play it back
 	soundC11 = loadSound('sounds/C/C-1-1.mp3');
 	soundC13 = loadSound('sounds/C/C-1-3.mp3');
@@ -223,6 +247,19 @@ function preload() {
 	soundCp16 = loadSound('sounds/Cp/Cp-1-6.mp3');
 	soundCp21 = loadSound('sounds/Cp/Cp-2-1.mp3');
 
+	sandmanLongCmp11 = loadSound('sounds/Cmp/Cmp-1-1.mp3');
+	sandmanLongCmp12 = loadSound('sounds/Cmp/Cmp-1-2.mp3');
+	sandmanLongCmp13 = loadSound('sounds/Cmp/Cmp-1-3.mp3');
+	sandmanLongCmp14 = loadSound('sounds/Cmp/Cmp-1-4.mp3');
+	sandmanLongCmp15 = loadSound('sounds/Cmp/Cmp-1-5.mp3');
+	sandmanLongCmp21 = loadSound('sounds/Cmp/Cmp-2-1.mp3');
+	sandmanShortCmp11 = loadSound('sounds/Cmp/Cmp-1-1_short.mp3');
+	sandmanShortCmp12 = loadSound('sounds/Cmp/Cmp-1-2_short.mp3');
+	sandmanShortCmp13 = loadSound('sounds/Cmp/Cmp-1-3_short.mp3');
+	sandmanShortCmp14 = loadSound('sounds/Cmp/Cmp-1-4_short.mp3');
+	sandmanShortCmp15 = loadSound('sounds/Cmp/Cmp-1-5_short.mp3');
+	sandmanShortCmp21 = loadSound('sounds/Cmp/Cmp-2-1_short.mp3');
+
 	whiteLibrary = new Array();
 	// whiteLibrary['Motion-1'] = soundC11;
 	// whiteLibrary['Distance-1'] = soundC13;
@@ -231,12 +268,20 @@ function preload() {
 	// whiteLibrary['Distance-4'] = soundC21;
 	// whiteLibrary['Color-1'] = soundBoom;
 
-	whiteLibrary['Motion-1'] = soundCp11;
-	whiteLibrary['Distance-1'] = soundCp12;
-	whiteLibrary['Distance-2'] = soundCp13;
-	whiteLibrary['Distance-3'] = soundCp15;
-	whiteLibrary['Distance-4'] = soundCp16;
-	whiteLibrary['Color-1'] = soundCp21;
+	// whiteLibrary['Motion-1'] = soundCp11;
+	// whiteLibrary['Distance-1'] = soundCp12;
+	// whiteLibrary['Distance-2'] = soundCp13;
+	// whiteLibrary['Distance-3'] = soundCp15;
+	// whiteLibrary['Distance-4'] = soundCp16;
+	// whiteLibrary['Color-1'] = soundCp21;
+
+
+	whiteLibrary['Distance-1'] = [sandmanLongCmp11, sandmanShortCmp11];
+	whiteLibrary['Distance-2'] = [sandmanLongCmp12, sandmanShortCmp12];
+	whiteLibrary['Distance-3'] = [sandmanLongCmp13, sandmanShortCmp13];
+	whiteLibrary['Distance-4'] = [sandmanLongCmp14, sandmanShortCmp14];
+	whiteLibrary['Distance-5'] = [sandmanLongCmp15, sandmanShortCmp15];
+	whiteLibrary['Distance-6'] = [sandmanLongCmp21, sandmanShortCmp21];
 
 	grayLibrary = new Array();
 	grayLibrary['Motion-1'] = soundD11;
@@ -289,6 +334,8 @@ function draw() {
 	var cur = new Date();
 	var curTime = dateConvert(cur);
 	var diff = curTime.getAbsoluteMil() - startTime.getAbsoluteMil();
+
+	console.log('offset:  '+offset);
 
 	if (soundQueue.length > 0) {
 		// if it's time to play the next sound

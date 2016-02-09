@@ -10,7 +10,8 @@ def getTime():
 
 delay = 3
 
-sensorList = ['Distance', 'Distance', 'Distance', 'Distance', 'Motion', 'Color']
+# sensorList = ['Distance', 'Distance', 'Distance', 'Distance', 'Motion', 'Color']
+sensorList = ['Distance']
 
 while True:
 	curTime = getTime()
@@ -37,7 +38,7 @@ while True:
 				sensorType = random.randint(0,len(sensorList)-1)
 				sensor = sensorList[sensorType]
 				if sensor == 'Distance':
-					sensorID = str(random.randint(1,3))
+					sensorID = str(random.randint(1,6))
 				else:
 					sensorID = '1'
 				sensorValue = str(random.randint(0,300))
