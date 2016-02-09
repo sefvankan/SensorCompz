@@ -27,12 +27,13 @@ while True:
 		timeList.sort()
 		if len(timeList) > 0:
 			for indx, t in enumerate(timeList):
+				sensorValue = str(random.randint(0,99))
 				timeToWrite = t.strftime('%H:%M:%S:%f')[:-3]
 				sensorID = random.randint(0,len(sensorList)-1)
 				if indx != len(timeList)-1:
-					entry = timeToWrite+'    '+sensorList[sensorID]+'    '+'100'+'\n'
+					entry = timeToWrite+'    '+sensorList[sensorID]+'    '+sensorValue+'\n'
 				else:
-					entry = timeToWrite+'    '+sensorList[sensorID]+'    '+'100'
+					entry = timeToWrite+'    '+sensorList[sensorID]+'    '+sensorValue
 				entryList.append(entry)
 			for e in entryList:
 				print e
