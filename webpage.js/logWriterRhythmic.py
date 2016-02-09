@@ -21,7 +21,7 @@ while True:
 		numEntries = delay
 		timeList = []
 		entryList = []
-		for i in xrange(0,numEntries+1):
+		for i in xrange(0,numEntries):
 			# secOffset = random.randint(0,delay-1)
 			secOffset = i;
 			# millisOffset = random.randint(0,999)
