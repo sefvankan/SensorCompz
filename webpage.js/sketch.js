@@ -83,15 +83,14 @@ function determineOutput(entry) {
 	switch (sensorType) {
 		case 'Distance':
 			outputDistance(entry[2],entry[3]);
+			break;
 		case 'Color':
 			outputColor(entry[3]);
+			break;
 		case 'Motion':
 			outputMotion(entry[2]);
+			break;
 	}
-}
-
-function outputDistance(id, distance) {
-	playSound(soundLibrary['Distance']);
 }
 
 function getColor(rgb) {
@@ -116,25 +115,35 @@ function getColor(rgb) {
 function changePalette(color) {
 	if(color=='White') {
 		background(255);
+		soundLibrary = whiteLibrary;
 	}
 	else if(color=='Black') {
 		background(0);
+		soundLibrary = blackLibrary;
 	}
 	else {
 		background(128);
+		soundLibrary = grayLibrary;
 	}
 }
 
-function changePalette(rgb) {
-
-}
-
 function outputColor(rgb) {
+	var newColor = getColor(rgb);
+	if(newColor != currentColor){
+		console.log("COLOR CHANGE WUSSUP")
+		currentColor = newColor;
+		changePalette(newColor);
+
+	}
 	playSound(soundLibrary['Color']);
 }
 
 function outputMotion(id) {
 	playSound(soundLibrary['Motion']);
+}
+
+function outputDistance(id, distance) {
+	playSound(soundLibrary['Distance']);
 }
 
 function playSound(soundFile) {
@@ -164,9 +173,9 @@ function preload() {
   grayLibrary['Color'] = soundD21;
 
 	blackLibrary = new Array();
-  grayLibrary['Motion'] = soundG11;
-  grayLibrary['Distance'] = soundG17;
-  grayLibrary['Color'] = soundG21;
+  blackLibrary['Motion'] = soundG11;
+  blackLibrary['Distance'] = soundG17;
+  blackLibrary['Color'] = soundG21;
 
 }
 
@@ -204,6 +213,7 @@ function draw() {
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 						pullTime = new Time(hour(), minute(), second(), 0);
+						now = new Date();
             logFile = xmlhttp.responseText.split('\n');
             for (var i = 0; i < logFile.length; i++) {
               //console.log(logFile[i])
@@ -211,13 +221,14 @@ function draw() {
               var entryTime = getTime(entry[0]);
               var delay = determineDelay(pullTime,entryTime);
 							console.log(delay)
-							now = new Date();
-							pullTime = new dateConvert(now);
+
+							//pullTime = new dateConvert(now);
 							if (delay > 0) {
 									setTimeout(determineOutput, delay, entry);
 							}
               if (delay < 0) {
                 console.log('WEIRD!!!! delay < 0:    '+delay)
+							//	elapsed += delay;
               }
             }
         }
