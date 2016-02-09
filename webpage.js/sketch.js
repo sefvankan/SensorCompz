@@ -15,11 +15,8 @@ var eden;
 var edenHpf;
 var belairLpf;
 var pullTime;
-<<<<<<< HEAD
 var currentColor;
-=======
 var previousColor;
->>>>>>> 28fd7f6add491e863ef88518d1a7d71412b1cbbd
 
 // to serve as a hashmap with key: ID; value: sound files
 var soundLibrary;
@@ -36,7 +33,7 @@ var soundG11;
 var soundG17;
 var soundG21;
 
-<<<<<<< HEAD
+
 function dateConvert(date) {
 return new Time(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
 }
@@ -47,14 +44,6 @@ function Time(h, m, s, ms) {
     this.min = int(m);
     this.sec = int(s);
     this.mil = int(ms);
-=======
-// function Time(h, m, s) {
-function Time(h, m, s, ms) {
-    this.hr = h;
-    this.min = m;
-    this.sec = s;
-    this.mil = ms;
->>>>>>> 28fd7f6add491e863ef88518d1a7d71412b1cbbd
   this.getHr = function() {
     return this.hr;
   };
@@ -95,11 +84,7 @@ function determineOutput(entry) {
 		case 'Distance':
 			outputDistance(entry[2],entry[3]);
 		case 'Color':
-<<<<<<< HEAD
 			outputColor(entry[3]);
-=======
-			outputColor(entry[2]);
->>>>>>> 28fd7f6add491e863ef88518d1a7d71412b1cbbd
 		case 'Motion':
 			outputMotion(entry[2]);
 	}
@@ -110,7 +95,6 @@ function outputDistance(id, distance) {
 }
 
 function getColor(rgb) {
-<<<<<<< HEAD
 	if(rgb<80) {
 		return 'Black';
 	}
@@ -141,27 +125,11 @@ function changePalette(color) {
 	}
 }
 
-function outputColor(rgb) {
-	// var newColor = getColor(rgb);
-	// if (newColor!=currentColor) {
-	// 	console.log(newColor);
-	// 	currentColor = newColor;
-	// 	changePalette(currentColor);
-	// 	playSound(soundLibrary['Color']);
-	// }
-=======
-	var red = parseInt(string.substring(0,3), 16);
-	var green = parseInt(string.substring(2,5), 16);
-	var blue = parseInt(string.substring(4,7), 16);
-	console.log(red + ',' + green + ',' + blue);
-}
-
 function changePalette(rgb) {
 
 }
 
 function outputColor(rgb) {
->>>>>>> 28fd7f6add491e863ef88518d1a7d71412b1cbbd
 	playSound(soundLibrary['Color']);
 }
 
@@ -175,7 +143,6 @@ function playSound(soundFile) {
 
 function preload() {
   // Load a soundfile from the /data folder of the sketch and play it back
-<<<<<<< HEAD
   soundC11 = loadSound('sounds/C/C-1-1.mp3');
 	soundC17 = loadSound('sounds/C/C-1-7.mp3');
 	soundC21 = loadSound('sounds/C/C-1-5.mp3');
@@ -200,17 +167,7 @@ function preload() {
   grayLibrary['Motion'] = soundG11;
   grayLibrary['Distance'] = soundG17;
   grayLibrary['Color'] = soundG21;
-=======
-  hello = loadSound('hello.mp3');
-  boom = loadSound('1.mp3');
-  eden = loadSound('eden.mp3');
-  belair = loadSound('belair.mp3');
 
-  soundLibrary = new Array();
-  soundLibrary['Motion'] = belair;
-  soundLibrary['Distance'] = eden;
-  soundLibrary['Color'] = boom;
->>>>>>> 28fd7f6add491e863ef88518d1a7d71412b1cbbd
 }
 
 
@@ -230,12 +187,8 @@ function setup() {
 	pullTime = new dateConvert(now);
 
   wait = 3000;
-<<<<<<< HEAD
 	currentColor = 'White';
 	soundLibrary = whiteLibrary;
-=======
-	oldColor = 'White';
->>>>>>> 28fd7f6add491e863ef88518d1a7d71412b1cbbd
 
   loop();
 }
@@ -250,12 +203,7 @@ function draw() {
     var logFile;
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-<<<<<<< HEAD
-						// pullTime = new Time(hour(), minute(), second(), 0);
-
-=======
 						pullTime = new Time(hour(), minute(), second(), 0);
->>>>>>> 28fd7f6add491e863ef88518d1a7d71412b1cbbd
             logFile = xmlhttp.responseText.split('\n');
             for (var i = 0; i < logFile.length; i++) {
               //console.log(logFile[i])
@@ -263,16 +211,11 @@ function draw() {
               var entryTime = getTime(entry[0]);
               var delay = determineDelay(pullTime,entryTime);
 							console.log(delay)
-<<<<<<< HEAD
-
 							now = new Date();
 							pullTime = new dateConvert(now);
 							if (delay > 0) {
 									setTimeout(determineOutput, delay, entry);
 							}
-=======
-              setTimeout(determineOutput, delay, entry);
->>>>>>> 28fd7f6add491e863ef88518d1a7d71412b1cbbd
               if (delay < 0) {
                 console.log('WEIRD!!!! delay < 0:    '+delay)
               }
