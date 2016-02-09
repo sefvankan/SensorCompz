@@ -12,16 +12,8 @@ var noOffset;
 var nextSound;
 var soundQueue;
 
-// sound files
-var hello;
-var boom;
-var belair;
-var eden;
-
 // filter objects
-var edenHpf;
-var belairLpf;
-var pullTime;
+var reverb;
 var currentColor;
 var previousColor;
 
@@ -31,14 +23,27 @@ var whiteLibrary;
 var grayLibrary;
 var blackLibrary;
 var soundC11;
+var soundC13;
+var soundC15;
 var soundC17;
 var soundC21;
 var soundD11;
+var soundD13;
+var soundD15;
 var soundD17;
 var soundD21;
 var soundG11;
+var soundG13;
+var soundG15;
 var soundG17;
 var soundG21;
+var soundBoom;
+var soundCp11;
+var soundCp12;
+var soundCp13;
+var soundCp15;
+var soundCp16;
+var soundCp21;
 
 
 function dateConvert(date) {
@@ -177,52 +182,77 @@ function changePalette(color) {
 function outputColor(id, rgb) {
 	var newColor = getColor(rgb);
 	if(newColor != currentColor){
-		console.log("COLOR CHANGE WUSSUP")
 		currentColor = newColor;
+		console.log("COLOR CHANGE WUSSUP:  "+newColor);
 		changePalette(newColor);
-
 	}
-	playSound(soundLibrary['Color']);
+	// reverb.process(soundLibrary['Color'+'-'+id], rgb/50, rgb/50);
+	soundLibrary['Color'+'-'+id].play();
 }
 
 function outputMotion(id) {
-	playSound(soundLibrary['Motion']);
+	soundLibrary['Motion'+'-'+id].play();
 }
 
 function outputDistance(id, distance) {
-	playSound(soundLibrary['Distance']);
-}
-
-function playSound(soundFile) {
-	soundFile.play();
+	soundLibrary['Distance'+'-'+id].play();
 }
 
 function preload() {
 	// Load a soundfile from the /data folder of the sketch and play it back
 	soundC11 = loadSound('sounds/C/C-1-1.mp3');
+	soundC13 = loadSound('sounds/C/C-1-3.mp3');
+	soundC15 = loadSound('sounds/C/C-1-5.mp3');
 	soundC17 = loadSound('sounds/C/C-1-7.mp3');
 	soundC21 = loadSound('sounds/C/C-1-5.mp3');
 	soundD11 = loadSound('sounds/D/D-1-1.mp3');
+	soundD13 = loadSound('sounds/D/D-1-3.mp3');
+	soundD15 = loadSound('sounds/D/D-1-5.mp3');
 	soundD17 = loadSound('sounds/D/D-1-7.mp3');
 	soundD21 = loadSound('sounds/D/D-1-5.mp3');
 	soundG11 = loadSound('sounds/G/G-1-1.mp3');
+	soundG13 = loadSound('sounds/G/G-1-3.mp3');
+	soundG15 = loadSound('sounds/G/G-1-5.mp3');
 	soundG17 = loadSound('sounds/G/G-1-7.mp3');
-	soundG21 = loadSound('sounds/G/G-1-5.mp3');
+	soundG21 = loadSound('sounds/G/G-2-1.mp3');
+	soundBoom = loadSound('sounds/boom.mp3');
+	soundCp11 = loadSound('sounds/Cp/Cp-1-1.mp3');
+	soundCp12 = loadSound('sounds/Cp/Cp-1-2.mp3');
+	soundCp13 = loadSound('sounds/Cp/Cp-1-3.mp3');
+	soundCp15 = loadSound('sounds/Cp/Cp-1-5.mp3');
+	soundCp16 = loadSound('sounds/Cp/Cp-1-6.mp3');
+	soundCp21 = loadSound('sounds/Cp/Cp-2-1.mp3');
 
 	whiteLibrary = new Array();
-	whiteLibrary['Motion'] = soundC11;
-	whiteLibrary['Distance'] = soundC17;
-	whiteLibrary['Color'] = soundC21;
+	// whiteLibrary['Motion-1'] = soundC11;
+	// whiteLibrary['Distance-1'] = soundC13;
+	// whiteLibrary['Distance-2'] = soundC15;
+	// whiteLibrary['Distance-3'] = soundC17;
+	// whiteLibrary['Distance-4'] = soundC21;
+	// whiteLibrary['Color-1'] = soundBoom;
+
+	whiteLibrary['Motion-1'] = soundCp11;
+	whiteLibrary['Distance-1'] = soundCp12;
+	whiteLibrary['Distance-2'] = soundCp13;
+	whiteLibrary['Distance-3'] = soundCp15;
+	whiteLibrary['Distance-4'] = soundCp16;
+	whiteLibrary['Color-1'] = soundCp21;
 
 	grayLibrary = new Array();
-	grayLibrary['Motion'] = soundD11;
-	grayLibrary['Distance'] = soundD17;
-	grayLibrary['Color'] = soundD21;
+	grayLibrary['Motion-1'] = soundD11;
+	grayLibrary['Distance-1'] = soundD13;
+	grayLibrary['Distance-2'] = soundD15;
+	grayLibrary['Distance-3'] = soundD17;
+	grayLibrary['Distance-4'] = soundD21;
+	grayLibrary['Color-1'] = soundD11;
 
 	blackLibrary = new Array();
-	blackLibrary['Motion'] = soundG11;
-	blackLibrary['Distance'] = soundG17;
-	blackLibrary['Color'] = soundG21;
+	blackLibrary['Motion-1'] = soundG11;
+	blackLibrary['Distance-1'] = soundG13;
+	blackLibrary['Distance-2'] = soundG15;
+	blackLibrary['Distance-3'] = soundG17;
+	blackLibrary['Distance-4'] = soundG21;
+	blackLibrary['Color-1'] = soundG11;
 }
 
 
@@ -240,6 +270,8 @@ function setup() {
 	text("word", 10, 30);
 	fill(0, 102, 153);
 	elapsed = millis();
+
+	reverb = new p5.Reverb();
 	
 	offset = 0;
 	noOffset = true;
@@ -269,8 +301,8 @@ function draw() {
 		}
 	}
 
+	// every {wait} milliseconds:
 	if (millis() - elapsed >= wait) {
-		console.log('------------------');
 
 		elapsed = millis();
 
@@ -281,7 +313,7 @@ function draw() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 				logFile = xmlhttp.responseText.split('\n');
 				for (var i = 0; i < logFile.length; i++) {
-					console.log(logFile[i])
+					// console.log(logFile[i])
 					var entry = logFile[i].split("    ");
 					var entryTime = getTime(entry[0]);
 					var entrySensor = entry[1];
