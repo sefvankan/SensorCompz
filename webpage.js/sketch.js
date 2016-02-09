@@ -82,7 +82,7 @@ function determineOutput(entry) {
 		case 'Distance':
 			outputDistance(entry[2],entry[3]);
 		case 'Color':
-			outputColor(entry[2]);
+			outputColor(entry[3]);
 		case 'Motion':
 			outputMotion(entry[2]);
 	}
@@ -93,10 +93,10 @@ function outputDistance(id, distance) {
 }
 
 function getColor(rgb) {
-	if(rgb<33) {
+	if(rgb<80) {
 		return 'Black';
 	}
-	else if(rgb>66) {
+	else if(rgb>180) {
 		return 'White';
 	}
 	else {
@@ -124,13 +124,14 @@ function changePalette(color) {
 }
 
 function outputColor(rgb) {
-	var newColor = getColor(rgb);
-	console.log(newColor);
-	if (newColor!=currentColor) {
-		currentColor = newColor;
-		changePalette(currentColor);
-		playSound(soundLibrary['Color']);
-	}
+	// var newColor = getColor(rgb);
+	// if (newColor!=currentColor) {
+	// 	console.log(newColor);
+	// 	currentColor = newColor;
+	// 	changePalette(currentColor);
+	// 	playSound(soundLibrary['Color']);
+	// }
+	playSound(soundLibrary['Color']);
 }
 
 function outputMotion(id) {
@@ -145,13 +146,13 @@ function preload() {
   // Load a soundfile from the /data folder of the sketch and play it back
   soundC11 = loadSound('sounds/C/C-1-1.mp3');
 	soundC17 = loadSound('sounds/C/C-1-7.mp3');
-	soundC21 = loadSound('sounds/C/C-2-1.mp3');
+	soundC21 = loadSound('sounds/C/C-1-5.mp3');
 	soundD11 = loadSound('sounds/D/D-1-1.mp3');
 	soundD17 = loadSound('sounds/D/D-1-7.mp3');
-	soundD21 = loadSound('sounds/D/D-2-1.mp3');
+	soundD21 = loadSound('sounds/D/D-1-5.mp3');
 	soundG11 = loadSound('sounds/G/G-1-1.mp3');
 	soundG17 = loadSound('sounds/G/G-1-7.mp3');
-	soundG21 = loadSound('sounds/G/G-2-1.mp3');
+	soundG21 = loadSound('sounds/G/G-1-5.mp3');
 
   whiteLibrary = new Array();
   whiteLibrary['Motion'] = soundC11;
@@ -181,7 +182,10 @@ function setup() {
   text("word", 10, 30);
   fill(0, 102, 153);
   elapsed = millis();
-  pullTime = new Time(hour(), minute(), second(), 0);
+  // pullTime = new Time(hour(), minute(), second(), 0);
+	now = new Date();
+	pullTime = new dateConvert(now);
+
   wait = 3000;
 	currentColor = 'White';
 	soundLibrary = whiteLibrary;
@@ -199,9 +203,8 @@ function draw() {
     var logFile;
     xmlhttp.onreadystatechange = function() {
         if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-						pullTime = new Time(hour(), minute(), second(), 0);
-						now = new Date();
-						pullTime = new dateConvert(now);
+						// pullTime = new Time(hour(), minute(), second(), 0);
+
             logFile = xmlhttp.responseText.split('\n');
             for (var i = 0; i < logFile.length; i++) {
               //console.log(logFile[i])
@@ -209,9 +212,14 @@ function draw() {
               var entryTime = getTime(entry[0]);
               var delay = determineDelay(pullTime,entryTime);
 							console.log(delay)
-              setTimeout(determineOutput, delay, entry);
+
+							now = new Date();
+							pullTime = new dateConvert(now);
+							if (delay > 0) {
+									setTimeout(determineOutput, delay, entry);
+							}
               if (delay < 0) {
-                console.log('WEIRD!!!! delay < 0')
+                console.log('WEIRD!!!! delay < 0:    '+delay)
               }
             }
         }
