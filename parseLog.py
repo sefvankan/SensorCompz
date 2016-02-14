@@ -13,8 +13,13 @@ stopLine = ""
 
 def initSensorMap():
 	sensorMap = dict()
+	# Sherri
 	sensorMap['34'] = 'Distance'
+
+	# Amy
 	# sensorMap['31'] = 'Distance'
+
+	# Jeff
 	sensorMap['33'] = 'Distance'
 
 	return sensorMap
@@ -31,9 +36,12 @@ def writeEntry(inFile, outFile, sensorMap, valueTypes, entryDeque):
 	global stopLine
 
 	for curLine in reversed(inFile.readlines()):
+		# if any of value type keywords (e.g. "CurrentDistance, "") are in the line
+		# then read the line as an entry
 		if any(valType in curLine for valType in valueTypes):
 			fields = [field.lstrip() for field in curLine.split(",")]
 			sensorID = fields[3].split(" ")[0].strip()
+			# **skip over Amy for now b/c of bad sensor
 			if sensorID == '31':
 				continue
 			sensorValue = fields[2].strip()
@@ -72,9 +80,6 @@ def writeEntry(inFile, outFile, sensorMap, valueTypes, entryDeque):
 			outFile.write(curEntry)
 
 	return
-
-# subprocess.call(['./openMaster.sh'])
-
 
 sensorMap = initSensorMap()
 valueTypes = initValueTypes()
