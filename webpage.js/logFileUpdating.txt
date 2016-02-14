@@ -1,3 +1,4 @@
-17:54:45:108    Distance    5    292
-17:54:45:844    Distance    3    286
-17:54:46:467    Distance    3    226
+5:12:23:490	Distance	33	152
+5:12:23:014	Distance	34	5
+5:12:22:459	Distance	34	0
+5:12:21:888	Distance	34	5

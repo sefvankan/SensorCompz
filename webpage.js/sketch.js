@@ -213,14 +213,14 @@ function outputMotion(id) {
 // }
 
 function outputDistance(id, distance) {
-	if (distance > 75) {
+	if (distance > 50) {
 		if (distance % 3 == 1) {
 			soundLibrary['Distance'+'-'+id][0].pan(-.35);
 		} else if (distance % 3 == 2) {
 			soundLibrary['Distance'+'-'+id][0].pan(.35);
 		}
 		soundLibrary['Distance'+'-'+id][0].play();	
-	} else {
+	} else if (distance < 150) {
 		if (distance % 3 == 1) {
 			soundLibrary['Distance'+'-'+id][1].pan(-.85);
 		} else if (distance % 3 == 2) {
@@ -285,13 +285,20 @@ function preload() {
 	// whiteLibrary['Distance-4'] = soundCp16;
 	// whiteLibrary['Color-1'] = soundCp21;
 
-
 	whiteLibrary['Distance-1'] = [sandmanLongCmp11, sandmanShortCmp11];
 	whiteLibrary['Distance-2'] = [sandmanLongCmp12, sandmanShortCmp12];
 	whiteLibrary['Distance-3'] = [sandmanLongCmp13, sandmanShortCmp13];
 	whiteLibrary['Distance-4'] = [sandmanLongCmp14, sandmanShortCmp14];
 	whiteLibrary['Distance-5'] = [sandmanLongCmp15, sandmanShortCmp15];
 	whiteLibrary['Distance-6'] = [sandmanLongCmp21, sandmanShortCmp21];
+
+
+	// whiteLibrary['Distance-31'] = [sandmanLongCmp11, sandmanShortCmp11];
+	// whiteLibrary['Distance-2'] = [sandmanLongCmp12, sandmanShortCmp12];
+	// whiteLibrary['Distance-3'] = [sandmanLongCmp13, sandmanShortCmp13];
+	// whiteLibrary['Distance-4'] = [sandmanLongCmp14, sandmanShortCmp14];
+	whiteLibrary['Distance-33'] = [sandmanLongCmp15, sandmanShortCmp15];
+	whiteLibrary['Distance-34'] = [sandmanLongCmp21, sandmanShortCmp21];
 
 	grayLibrary = new Array();
 	grayLibrary['Motion-1'] = soundD11;
@@ -331,7 +338,7 @@ function setup() {
 	offset = 0;
 	noOffset = true;
 
-	wait = 3000;
+	wait = 50;
 	currentColor = 'White';
 	soundLibrary = whiteLibrary;
 
@@ -369,9 +376,9 @@ function draw() {
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
 				logFile = xmlhttp.responseText.split('\n');
-				for (var i = 0; i < logFile.length; i++) {
+				for (var i = 0; i < logFile.length-1; i++) {
 					// console.log(logFile[i])
-					var entry = logFile[i].split("    ");
+					var entry = logFile[i].split("\t");
 					var entryTime = getTime(entry[0]);
 					var entrySensor = entry[1];
 					var entryID = entry[2];
@@ -391,7 +398,7 @@ function draw() {
 						soundQueue.push(nextSound);
 					}
 					if (delay < 0) {
-						console.log('WEIRD!!!! delay < 0:    '+delay)
+						console.log('WEIRD!!!! delay < 0:\t'+delay)
 						soundQueue.push(nextSound);
 						elapsed += delay;
 				  	}
