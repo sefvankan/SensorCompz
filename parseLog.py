@@ -6,6 +6,8 @@ import subprocess
 import datetime
 from collections import deque
 import os
+import json
+import requests
 
 # global variable
 stopTime = datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]
@@ -17,7 +19,7 @@ def initSensorMap():
 	sensorMap['34'] = 'Distance'
 
 	# Amy
-	# sensorMap['31'] = 'Distance'
+	sensorMap['39'] = 'Distance'
 
 	# Jeff
 	sensorMap['33'] = 'Distance'
@@ -38,34 +40,30 @@ def writeEntry(inFile, outFile, sensorMap, valueTypes, entryDeque):
 	for curLine in reversed(inFile.readlines()):
 		# if any of value type keywords (e.g. "CurrentDistance, "") are in the line
 		# then read the line as an entry
-		if any(valType in curLine for valType in valueTypes):
-			fields = [field.lstrip() for field in curLine.split(",")]
-			sensorID = fields[3].split(" ")[0].strip()
-			# **skip over Amy for now b/c of bad sensor
-			if sensorID == '31':
-				continue
-			sensorValue = fields[2].strip()
-			sensorType = sensorMap[sensorID]
-			timeStamp = fields[0].split("\t")[1].split(" ")[1].replace(".", ":")
+		# if any(valType in curLine for valType in valueTypes):
+		fields = [field.lstrip() for field in curLine.split(",")]
+		sensorID = fields[3].split(" ")[0].strip()
+		sensorValue = fields[2].strip()
+		sensorType = sensorMap[sensorID]
+		timeStamp = fields[0].split("\t")[1].split(" ")[1].replace(".", ":")
 
-			entry = timeStamp+"\t"+sensorType+"\t"+sensorID+"\t"+sensorValue+"\n"
-			print entry
+		entry = timeStamp+"\t"+sensorType+"\t"+sensorID+"\t"+sensorValue+"\n"
 
-			# to avoid reading in duplicates
-			if entry == stopLine:
-				print "SAAAAAMESIES BREAAAAK"
-				break
+		# to avoid reading in duplicates
+		if entry == stopLine:
+			print "SAAAAAMESIES BREAAAAK"
+			break
 
-			if int(timeStamp.replace(":", "")) < int(stopTime.replace(":","")):
-				# *** to fix??: theoretically we could end up with a sensor trip that is never acknowledged
-				if int(timeStamp.replace(":", "")) == int(stopTime.replace(":","")):
-					raise StandardError("Skipped a sensor reading")
-				print "BREAK"
-				print "timestamp", timeStamp
-				print "stoptime", stopTime
-				break
+		if int(timeStamp.replace(":", "")) < int(stopTime.replace(":","")):
+			# *** to fix??: theoretically we could end up with a sensor trip that is never acknowledged
+			if int(timeStamp.replace(":", "")) == int(stopTime.replace(":","")):
+				raise StandardError("Skipped a sensor reading")
+			print "BREAK"
+			print "timestamp", timeStamp
+			print "stoptime", stopTime
+			break
 
-			entryDeque.append(entry)
+		entryDeque.append(entry)
 
 	# # peek first item in queue (newest time)
 	if entryDeque:
@@ -74,7 +72,7 @@ def writeEntry(inFile, outFile, sensorMap, valueTypes, entryDeque):
 
 		# while deque is not empty:
 		while entryDeque:
-			curEntry = entryDeque.popleft()
+			curEntry = entryDeque.pop()
 			print "****WRITTEN:   ", curEntry
 
 			outFile.write(curEntry)
@@ -89,12 +87,12 @@ while True:
 	print datetime.datetime.now().strftime("%m-%d_%H.%M.%S.%f")[:-3]
 	print
 
-	#subprocess.call(['./scpLua.sh'])
 	subprocess.call(['./rsync.sh'])
 
 	entryDeque = deque()
 
-	with open("LuaUPnP.log", "r") as fullLog:
+	with open("filtered.log", "r") as fullLog:
+	# with open("LuaUPnP.log", "r") as fullLog:
 
 		# Set the title of the output file to the current time
 		now = datetime.datetime.now()

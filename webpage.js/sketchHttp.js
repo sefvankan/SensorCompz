@@ -9,11 +9,15 @@ var now;
 var offset;
 var noOffset;
 
+var prevEntry;
+var logText;
+var stopTime;
+var stopLine;
+
+var sensorMap;
+
 var nextSound;
 var soundQueue;
-
-var logText
-var prevEntry
 
 // filter objects
 var reverb;
@@ -234,6 +238,21 @@ function outputDistance(id, distance) {
 	
 }
 
+// function httpGetAsync(url, callback) {
+function httpGetAsync(url) {
+	var rText = null
+    var xmlHttp = new XMLHttpRequest();
+    xmlHttp.withCredentials = true;
+    xmlHttp.onreadystatechange = function() { 
+        if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
+            // callback(xmlHttp.responseText);
+        	rText = xmlHttp.responseText;
+    }
+    xmlHttp.open("GET", url, true); // true for asynchronous 
+    xmlHttp.send(null);
+    return rText
+}
+
 function preload() {
 
 	// Load a soundfile from the /data folder of the sketch and play it back
@@ -296,7 +315,7 @@ function preload() {
 	whiteLibrary['Distance-6'] = [sandmanLongCmp21, sandmanShortCmp21];
 
 
-	whiteLibrary['Distance-39'] = [sandmanLongCmp11, sandmanShortCmp11];
+	// whiteLibrary['Distance-31'] = [sandmanLongCmp11, sandmanShortCmp11];
 	// whiteLibrary['Distance-2'] = [sandmanLongCmp12, sandmanShortCmp12];
 	// whiteLibrary['Distance-3'] = [sandmanLongCmp13, sandmanShortCmp13];
 	// whiteLibrary['Distance-4'] = [sandmanLongCmp14, sandmanShortCmp14];
@@ -325,6 +344,74 @@ function determineDelay(pullTime,entryTime) {
 	return entryTime.getAbsoluteMil()-pullTime.getAbsoluteMil();
 }
 
+
+
+function parseLog(logText, sensorMap, valueTypes, soundDeque, startTime, stopTime, noOffset, soundQueue) {
+	var isEntry;
+	var isFirst;
+	logFile = logText.split('\n');
+
+	// iterate backwards through logFile
+	for (var i = logFile.length-1; i > -1; i--) {
+		isEntry = false;
+		for (var j = 0; j < valueTypes.length; j++) {
+			if (logText.indexOf(valueTypes[j]) > -1) {
+				isEntry = true;
+				break;
+			}
+		}
+		if (isEntry) {
+
+			var fieldsRaw = logFile[i].split(",");
+			var fields = []
+			for (var j = 0; j < fieldsRaw.length; j++) {
+				fields.push(fieldsRaw[j].trimLeft());
+			}
+
+			var entryID = fields[3].split(" ")[0].trim();
+			if (entryID == '31') {
+				continue;
+			}
+			var entryValue = fields[2].trim();
+			var timeStamp = fields[0].split("\t")[1].split(" ")[1].replace(".", ":");
+			var entryTime = getTime(timeStamp);
+			var entryType = sensorMap[entryID];
+			var entry = [timeStamp, entryType, entryID, entryValue]
+
+			var delay = determineDelay(startTime,entryTime);
+
+			if (isFirst) {
+				stopTime = entryTime;
+			}
+
+			if (entryTime.getAbsoluteMil() < stopTime.getAbsoluteMil()) {
+				console.log('BREAAAAAK');
+				break;
+			}
+
+			console.log(timeStamp+'\t'+entryType+'\t'+entryID+'\t'+entryValue);
+
+			// determine offset for checking when to play sound
+			// only set offset for first sound
+			if (noOffset) {
+				offset = millis() - delay;
+				noOffset = false;
+			}
+			
+			nextSound = new SoundToPlay(entry, delay);
+			if (delay > 0) {
+				soundQueue.push(nextSound);
+			}
+			if (delay < 0) {
+				console.log('WEIRD!!!! delay < 0:\t'+delay)
+				soundQueue.push(nextSound);
+				elapsed += delay;
+		  	}
+		}
+	}
+	return stopTime;
+}
+
 function setup() {
 	now = new Date();
 	startTime = new dateConvert(now);
@@ -345,9 +432,15 @@ function setup() {
 	currentColor = 'White';
 	soundLibrary = whiteLibrary;
 
-	prevEntry = "";
-
 	soundQueue = [];
+
+	prevEntry = "";
+	stopLine = "";
+	stopTime = startTime;
+
+	sensorMap = new Array();
+	sensorMap['34'] = 'Distance';
+	sensorMap['33'] = 'Distance';
 
 	loop();
 }
@@ -355,8 +448,9 @@ function setup() {
 function draw() {
 	var cur = new Date();
 	var curTime = dateConvert(cur);
-	console.log(curTime);
 	var diff = curTime.getAbsoluteMil() - startTime.getAbsoluteMil();
+
+	console.log('offset:  '+offset);
 
 	if (soundQueue.length > 0) {
 		// if it's time to play the next sound
@@ -369,51 +463,56 @@ function draw() {
 		}
 	}
 
-	// every {wait} milliseconds:
-	if (millis() - elapsed >= wait) {
+	// httpGetAsync('http://localhost:8888/SensorCompz/webpage.js/');
+	logText = httpGetAsync("http://137.22.30.136/cgi-bin/cmh/log.sh?Device=LuaUPnP");
 
-		elapsed = millis();
+	stopTime = parseLog(logText, sensorMap, valueTypes, soundDeque, startTime, stopTime, noOffset, soundQueue);
 
-		var xmlhttp = new XMLHttpRequest();
-		var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
-		var logFile;
-		xmlhttp.onreadystatechange = function() {
-			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-				logText = xmlhttp.responseText;
-				if (logText != prevEntry) {
-					logFile = logText.split('\n');
-					for (var i = 0; i < logFile.length-1; i++) {
-						// console.log(logFile[i])
-						var entry = logFile[i].split("\t");
-						var entryTime = getTime(entry[0]);
-						var entrySensor = entry[1];
-						var entryID = entry[2];
-						var entryValue = entry[3];
+	// // every {wait} milliseconds:
+	// if (millis() - elapsed >= wait) {
 
-						var delay = determineDelay(startTime,entryTime);
+	// 	elapsed = millis();
 
-						// determine offset for checking when to play sound
-						// only set offset for first sound
-						if (noOffset) {
-							offset = millis() - delay;
-							noOffset = false;
-						}
+	// 	var xmlhttp = new XMLHttpRequest();
+	// 	var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
+	// 	var logFile;
+	// 	xmlhttp.onreadystatechange = function() {
+	// 		if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+	// 			logText = xmlhttp.responseText;
+	// 			if (logText != prevEntry) {
+	// 				logFile = logText.split('\n');
+	// 				for (var i = 0; i < logFile.length-1; i++) {
+	// 					// console.log(logFile[i])
+	// 					var entry = logFile[i].split("\t");
+	// 					var entryTime = getTime(entry[0]);
+	// 					var entrySensor = entry[1];
+	// 					var entryID = entry[2];
+	// 					var entryValue = entry[3];
+
+	// 					var delay = determineDelay(startTime,entryTime);
+
+	// 					// determine offset for checking when to play sound
+	// 					// only set offset for first sound
+	// 					if (noOffset) {
+	// 						offset = millis() - delay;
+	// 						noOffset = false;
+	// 					}
 						
-						nextSound = new SoundToPlay(entry, delay);
-						if (delay > 0) {
-							soundQueue.push(nextSound);
-						}
-						if (delay < 0) {
-							console.log('WEIRD!!!! delay < 0:\t'+delay)
-							soundQueue.push(nextSound);
-							elapsed += delay;
-					  	}
-					}
-					prevEntry = logText;
-				}
-			}
-		};
-		xmlhttp.open("GET", url, true);
-		xmlhttp.send();
-	}
+	// 					nextSound = new SoundToPlay(entry, delay);
+	// 					if (delay > 0) {
+	// 						soundQueue.push(nextSound);
+	// 					}
+	// 					if (delay < 0) {
+	// 						console.log('WEIRD!!!! delay < 0:\t'+delay)
+	// 						soundQueue.push(nextSound);
+	// 						elapsed += delay;
+	// 				  	}
+	// 				}
+	// 				prevEntry = logText;
+	// 			}
+	// 		}
+	// 	};
+	// 	xmlhttp.open("GET", url, true);
+	// 	xmlhttp.send();
+	// }
 }
