@@ -61,6 +61,8 @@ var sandmanShortCmp14;
 var sandmanShortCmp15;
 var sandmanShortCmp21;
 
+var belair;
+
 
 function dateConvert(date) {
 	return new Time(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
@@ -216,14 +218,16 @@ function outputMotion(id) {
 // }
 
 function outputDistance(id, distance) {
-	if (distance > 50) {
+	if (distance > 100 && distance < 150) {
 		if (distance % 3 == 1) {
 			soundLibrary['Distance'+'-'+id][0].pan(-.35);
 		} else if (distance % 3 == 2) {
 			soundLibrary['Distance'+'-'+id][0].pan(.35);
 		}
 		soundLibrary['Distance'+'-'+id][0].play();	
-	} else if (distance < 150) {
+	} else if (distance < 20 && distance > 0) {
+		sandmanShortCmp21.play()
+	} else if (distance < 70 && distance > 0) {
 		if (distance % 3 == 1) {
 			soundLibrary['Distance'+'-'+id][1].pan(-.85);
 		} else if (distance % 3 == 2) {
@@ -301,7 +305,7 @@ function preload() {
 	// whiteLibrary['Distance-3'] = [sandmanLongCmp13, sandmanShortCmp13];
 	// whiteLibrary['Distance-4'] = [sandmanLongCmp14, sandmanShortCmp14];
 	whiteLibrary['Distance-33'] = [sandmanLongCmp15, sandmanShortCmp15];
-	whiteLibrary['Distance-34'] = [sandmanLongCmp21, sandmanShortCmp21];
+	whiteLibrary['Distance-34'] = [sandmanLongCmp13, sandmanShortCmp13];
 
 	grayLibrary = new Array();
 	grayLibrary['Motion-1'] = soundD11;
@@ -318,6 +322,9 @@ function preload() {
 	blackLibrary['Distance-3'] = soundG17;
 	blackLibrary['Distance-4'] = soundG21;
 	blackLibrary['Color-1'] = soundG11;
+
+
+	belair = loadSound('belair.mp3');
 }
 
 
@@ -355,7 +362,7 @@ function setup() {
 function draw() {
 	var cur = new Date();
 	var curTime = dateConvert(cur);
-	console.log(curTime);
+	// console.log(curTime);
 	var diff = curTime.getAbsoluteMil() - startTime.getAbsoluteMil();
 
 	if (soundQueue.length > 0) {
