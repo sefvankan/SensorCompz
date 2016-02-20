@@ -218,9 +218,7 @@ function outputMotion(id) {
 // }
 
 function outputDistance(id, distance) {
-	if (distance >= 150 && distance < 200) {
-		belair.play();
-	} else if (distance > 100 && distance < 150) {
+	if (distance > 100 && distance < 150) {
 		if (distance % 3 == 1) {
 			soundLibrary['Distance'+'-'+id][0].pan(-.35);
 		} else if (distance % 3 == 2) {
@@ -372,6 +370,7 @@ function draw() {
 		if (millis() - offset >= soundQueue[0].getDelay()) {
 			// shift off sound from queue
 			var toPlay = soundQueue.shift();
+			console.log(toPlay.getEntry());
 			// play the sound
 			determineOutput(toPlay);
 		}
@@ -383,7 +382,7 @@ function draw() {
 		elapsed = millis();
 
 		var xmlhttp = new XMLHttpRequest();
-		var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
+		var url = 'http://localhost:8888/SensorCompz/logFileUpdating.txt';
 		var logFile;
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
@@ -397,7 +396,6 @@ function draw() {
 						var entrySensor = entry[1];
 						var entryID = entry[2];
 						var entryValue = entry[3];
-						console.log(entry);
 
 						var delay = determineDelay(startTime,entryTime);
 
