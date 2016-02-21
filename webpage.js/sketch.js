@@ -21,6 +21,7 @@ var currentColor;
 var previousColor;
 
 // to serve as a hashmap with key: ID; value: sound files
+var displayVideo;
 var colorMap;
 var soundLibrary;
 var whiteLibrary;
@@ -155,7 +156,7 @@ function getTime(timeString) {
 function determineOutput(trigger) {
 	switch (trigger.getSensor()) {
 		case 'Distance':
-			outputDistance(trigger.getID(), trigger.getValue());
+			//outputDistance(trigger.getID(), trigger.getValue());
 			break;
 		case 'Color':
 			outputColor(trigger.getID(), trigger.getValue());
@@ -169,36 +170,19 @@ function determineOutput(trigger) {
 	}
 }
 
-function getColor(rgb) {
-	if(rgb<80) {
-		return 'Black';
-	}
-	else if(rgb>180) {
-		return 'White';
-	}
-	else {
-		return 'Gray';
-	}
-
-	// will use this one we start getting real RGB values
-
-	// var red = parseInt(string.substring(0,3), 16);
-	// var green = parseInt(string.substring(2,5), 16);
-	// var blue = parseInt(string.substring(4,7), 16);
-	// console.log(red + ',' + green + ',' + blue);
-}
-
 function changePalette(colorValue) {
 	var colorEntry = colorMap[colorValue];
 	background(colorEntry[1],colorEntry[2],colorEntry[3]);
 }
 
 function outputColor(id, colorValue) {
-	console.log('Color value: ' + colorValue)
-	if(colorValue != currentColor){
-		currentColor = colorValue;
-		//console.log("COLOR CHANGE WUSSUP:  "+newColor);
-		changePalette(colorValue);
+	console.log(colorValue)
+	if(colorValue!='16') {
+		if(colorValue != currentColor){
+			currentColor = colorValue;
+			//console.log("COLOR CHANGE WUSSUP:  "+newColor);
+			changePalette(colorValue);
+		}
 	}
 	// reverb.process(soundLibrary['Color'+'-'+id], rgb/50, rgb/50);
 	//soundLibrary['Color'+'-'+id].play();
@@ -307,17 +291,6 @@ function preload() {
 
 	snare = loadSound('sounds/snare.mp3')
 
-	colorMap = new Array();
-	colorMap['0'] = ['Black',0,0,0];
-	colorMap['1'] = ['White',255,255,255];
-	colorMap['11'] = ['Red',255,0,0];
-	colorMap['12'] = ['Orange',255,180,0];
-	colorMap['13'] = ['Yellow',255,255,0];
-	colorMap['14'] = ['Green',0,255,0];
-	colorMap['15'] = ['Blue',0,0,255];
-	colorMap['16'] = ['Indigo',0,255,255];
-	colorMap['17'] = ['Violet',100,0,200];
-
 	whiteLibrary = new Array();
 	// whiteLibrary['Motion-1'] = soundC11;
 	// whiteLibrary['Distance-1'] = soundC13;
@@ -332,6 +305,17 @@ function preload() {
 	// whiteLibrary['Distance-3'] = soundCp15;
 	// whiteLibrary['Distance-4'] = soundCp16;
 	// whiteLibrary['Color-1'] = soundCp21;
+
+	colorMap = new Array();
+	colorMap['0'] = ['Black',0,0,0];
+	colorMap['1'] = ['White',255,255,255];
+	colorMap['11'] = ['Red',255,0,0];
+	colorMap['12'] = ['Orange',255,180,0];
+	colorMap['13'] = ['Yellow',255,255,0];
+	colorMap['14'] = ['Green',0,255,0];
+	colorMap['15'] = ['Blue',0,0,255];
+	colorMap['16'] = ['Blue',0,0,255];
+	colorMap['17'] = ['Violet',100,0,200];
 
 	whiteLibrary['Distance-1'] = [sandmanLongCmp11, sandmanShortCmp11];
 	whiteLibrary['Distance-2'] = [sandmanLongCmp12, sandmanShortCmp12];
@@ -357,6 +341,8 @@ function preload() {
 	blackLibrary['Distance-3'] = soundG17;
 	blackLibrary['Distance-4'] = soundG21;
 	blackLibrary['Color-1'] = soundG11;
+
+	displayVideo = createVideo(['videos/videosample.webm']);
 
 
 	belair = loadSound('belair.mp3');
@@ -384,13 +370,16 @@ function setup() {
 	noOffset = true;
 
 	wait = 0;
-	currentColor = 'White';
+	currentColor = 0;
 	soundLibrary = whiteLibrary;
 
 	prevEntry = "";
 
 	soundQueue = [];
-
+	displayVideo.loop();
+	displayVideo.hide();
+	imageMode(CENTER);
+	image(displayVideo,700,450);
 	loop();
 }
 
@@ -414,6 +403,7 @@ function draw() {
 	if (millis() - elapsed >= wait) {
 
 		elapsed = millis();
+		image(displayVideo,700,450);
 
 		var xmlhttp = new XMLHttpRequest();
 		var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
@@ -430,7 +420,7 @@ function draw() {
 						var entrySensor = entry[1];
 						var entryID = entry[2];
 						var entryValue = entry[3];
-						console.log(entry);
+						console.log(entry)
 
 						var delay = determineDelay(startTime,entryTime);
 
@@ -458,4 +448,5 @@ function draw() {
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send();
 	}
+	displayVideo.loop();
 }
