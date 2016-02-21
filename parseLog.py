@@ -17,10 +17,13 @@ def initSensorMap():
 	sensorMap = dict()
 	
 	# Sherri
-	sensorMap['104'] = 'Distance'
-	
-	sensorMap['109'] = 'Distance'
-	
+	sensorMap['1'] = 'Distance'
+	# Jeff
+	sensorMap['2'] = 'Distance'
+	# Andy
+	sensorMap['3'] = 'Distance'
+	# Dave
+	sensorMap['4'] = 'Distance'
 	# DLN
 	sensorMap['31'] = 'Sound'
 	

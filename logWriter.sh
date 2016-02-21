@@ -1,4 +1,4 @@
-ssh -nNf -o ControlMaster=yes -o ControlPath="~/.ssh/ctl/%L-%r@%h:%p" -o ControlPersist=10m root@137.22.30.5
+ssh -nNf -o ControlMaster=yes -o ControlPath="~/.ssh/ctl/%L-%r@%h:%p" -o ControlPersist=10m root@137.22.30.188
 
 # expect {
 #   -re ".*password.*" {
@@ -9,4 +9,4 @@ ssh -nNf -o ControlMaster=yes -o ControlPath="~/.ssh/ctl/%L-%r@%h:%p" -o Control
 
 python parseLog.py
 
-ssh -O exit -o ControlPath="~/.ssh/ctl/%L-%r@%h:%p" root@137.22.30.5
+ssh -O exit -o ControlPath="~/.ssh/ctl/%L-%r@%h:%p" root@137.22.30.188

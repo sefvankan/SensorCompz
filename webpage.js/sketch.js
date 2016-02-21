@@ -63,6 +63,7 @@ var sandmanShortCmp21;
 
 var belair;
 
+var snare;
 
 function dateConvert(date) {
 	return new Time(date.getHours(), date.getMinutes(), date.getSeconds(), date.getMilliseconds());
@@ -161,6 +162,9 @@ function determineOutput(trigger) {
 		case 'Motion':
 			outputMotion(trigger.getID());
 			break;
+		case 'Sound':
+			outputSound(trigger.getID(), trigger.getValue());
+			break;
 	}
 }
 
@@ -217,27 +221,58 @@ function outputMotion(id) {
 // 	soundLibrary['Distance'+'-'+id].play();
 // }
 
-function outputDistance(id, distance) {
-	if (distance >= 150 && distance < 200) {
-		belair.play();
-	} else if (distance > 100 && distance < 150) {
-		if (distance % 3 == 1) {
-			soundLibrary['Distance'+'-'+id][0].pan(-.35);
-		} else if (distance % 3 == 2) {
-			soundLibrary['Distance'+'-'+id][0].pan(.35);
-		}
-		soundLibrary['Distance'+'-'+id][0].play();	
-	} else if (distance < 20 && distance > 0) {
-		sandmanShortCmp21.play()
-	} else if (distance < 70 && distance > 0) {
-		if (distance % 3 == 1) {
-			soundLibrary['Distance'+'-'+id][1].pan(-.85);
-		} else if (distance % 3 == 2) {
-			soundLibrary['Distance'+'-'+id][1].pan(.85);
-		}
-		soundLibrary['Distance'+'-'+id][1].play();	
+function determinePan(sound, distance) {
+	var SoundToPlay = sound
+	if (distance % 3 == 1) {
+		SoundToPlay = sound.pan(-.35)
+	} else if (distance % 3 == 2) {
+		SoundToPlay = sound.pan(.35)
 	}
-	
+	return SoundToPlay
+}
+
+function outputDistance(id, distance) {
+
+	if (distance < 40 && distance != 0) {
+		soundLibrary['Distance'+'-'+id][1].pan(.85);
+		soundLibrary['Distance'+'-'+id][1].play();
+		soundLibrary['Distance'+'-'+id][1].play();
+		soundLibrary['Distance'+'-'+id][1].play();
+		soundLibrary['Distance'+'-'+id][1].play();
+		sandmanLongCmp21.play();
+		sandmanLongCmp21.play();
+		soundLibrary['Distance'+'-'+id][1].pan(0);
+	} else if (distance < 235) {
+		soundLibrary['Distance'+'-'+id][0].play();
+	} else if (distance < 275) {
+		soundLibrary['Distance'+'-'+id][1].pan(-.85);
+		soundLibrary['Distance'+'-'+id][1].play();
+		soundLibrary['Distance'+'-'+id][1].pan(0);
+	}
+}
+
+function outputSound(id, volume) {
+
+	var diff = int(volume) - 140;
+	var nextLevelDiff = diff - 20
+	console.log("diff");
+	console.log(diff);
+	if (diff > 0 && diff < 20) {
+		console.log("playing small sound")
+		soundLibrary['VContainer1-'+id].setVolume(.6);
+		soundLibrary['VContainer1-'+id].play();
+		soundLibrary['VContainer1-'+id].play();
+	} else if (nextLevelDiff > 0) {
+		console.log("NEXT LEVEL DIFF: ");
+		console.log(nextLevelDiff);
+		var newVolume = .6 + (nextLevelDiff%10)/7.5;
+		console.log("new volume:");
+		console.log(newVolume)
+		soundLibrary['VContainer1-'+id].setVolume(newVolume);
+		soundLibrary['VContainer1-'+id].play();
+		soundLibrary['VContainer1-'+id].play();
+		soundLibrary['VContainer1-'+id].setVolume(.6);
+	}
 }
 
 function preload() {
@@ -279,6 +314,8 @@ function preload() {
 	sandmanShortCmp15 = loadSound('sounds/Cmp/Cmp-1-5_short.mp3');
 	sandmanShortCmp21 = loadSound('sounds/Cmp/Cmp-2-1_short.mp3');
 
+	snare = loadSound('sounds/snare.mp3')
+
 	whiteLibrary = new Array();
 	// whiteLibrary['Motion-1'] = soundC11;
 	// whiteLibrary['Distance-1'] = soundC13;
@@ -300,14 +337,8 @@ function preload() {
 	whiteLibrary['Distance-4'] = [sandmanLongCmp14, sandmanShortCmp14];
 	whiteLibrary['Distance-5'] = [sandmanLongCmp15, sandmanShortCmp15];
 	whiteLibrary['Distance-6'] = [sandmanLongCmp21, sandmanShortCmp21];
+	whiteLibrary['VContainer1-31'] = snare;
 
-
-	whiteLibrary['Distance-39'] = [sandmanLongCmp11, sandmanShortCmp11];
-	// whiteLibrary['Distance-2'] = [sandmanLongCmp12, sandmanShortCmp12];
-	// whiteLibrary['Distance-3'] = [sandmanLongCmp13, sandmanShortCmp13];
-	// whiteLibrary['Distance-4'] = [sandmanLongCmp14, sandmanShortCmp14];
-	whiteLibrary['Distance-33'] = [sandmanLongCmp15, sandmanShortCmp15];
-	whiteLibrary['Distance-34'] = [sandmanLongCmp13, sandmanShortCmp13];
 
 	grayLibrary = new Array();
 	grayLibrary['Motion-1'] = soundD11;
