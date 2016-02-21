@@ -15,20 +15,23 @@ stopLine = ""
 
 def initSensorMap():
 	sensorMap = dict()
+	
 	# Sherri
-	sensorMap['34'] = 'Distance'
-
-	# Amy
-	sensorMap['39'] = 'Distance'
-
-	# Jeff
-	sensorMap['33'] = 'Distance'
+	sensorMap['104'] = 'Distance'
+	
+	sensorMap['109'] = 'Distance'
+	
+	# DLN
+	sensorMap['31'] = 'Sound'
+	
+	# Other ones
 
 	return sensorMap
 
 def initValueTypes():
 	valueTypes = []
 	valueTypes.append('CurrentDistance,')
+	valueTypes.append('Variable2,')
 
 	return valueTypes
 
