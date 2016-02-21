@@ -53,6 +53,7 @@ def writeEntry(inFile, outFile, sensorMap, valueTypes, entryDeque):
 		fields = [field.lstrip() for field in curLine.split(",")]
 		sensorID = fields[3].split(" ")[0].strip()
 		sensorValue = fields[2].strip()
+		print sensorID
 		sensorType = sensorMap[sensorID]
 		timeStamp = fields[0].split("\t")[1].split(" ")[1].replace(".", ":")
 
