@@ -24,8 +24,11 @@ def initSensorMap():
 	sensorMap['3'] = 'Distance'
 	# Dave
 	sensorMap['4'] = 'Distance'
+	# Layla
+	sensorMap['21'] = 'Color'
 	# DLN
 	sensorMap['31'] = 'Sound'
+
 	
 	# Other ones
 
