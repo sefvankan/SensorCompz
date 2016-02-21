@@ -21,6 +21,7 @@ var currentColor;
 var previousColor;
 
 // to serve as a hashmap with key: ID; value: sound files
+var colorMap;
 var soundLibrary;
 var whiteLibrary;
 var grayLibrary;
@@ -187,30 +188,20 @@ function getColor(rgb) {
 	// console.log(red + ',' + green + ',' + blue);
 }
 
-function changePalette(color) {
-	if(color=='White') {
-		background(255);
-		soundLibrary = whiteLibrary;
-	}
-	else if(color=='Black') {
-		background(0);
-		soundLibrary = blackLibrary;
-	}
-	else {
-		background(128);
-		soundLibrary = grayLibrary;
-	}
+function changePalette(colorValue) {
+	var colorEntry = colorMap[colorValue];
+	background(colorEntry[1],colorEntry[2],colorEntry[3]);
 }
 
-function outputColor(id, rgb) {
-	var newColor = getColor(rgb);
-	if(newColor != currentColor){
-		currentColor = newColor;
-		console.log("COLOR CHANGE WUSSUP:  "+newColor);
-		changePalette(newColor);
+function outputColor(id, colorValue) {
+	console.log('Color value: ' + colorValue)
+	if(colorValue != currentColor){
+		currentColor = colorValue;
+		//console.log("COLOR CHANGE WUSSUP:  "+newColor);
+		changePalette(colorValue);
 	}
 	// reverb.process(soundLibrary['Color'+'-'+id], rgb/50, rgb/50);
-	soundLibrary['Color'+'-'+id].play();
+	//soundLibrary['Color'+'-'+id].play();
 }
 
 function outputMotion(id) {
@@ -316,6 +307,17 @@ function preload() {
 
 	snare = loadSound('sounds/snare.mp3')
 
+	colorMap = new Array();
+	colorMap['0'] = ['Black',0,0,0];
+	colorMap['1'] = ['White',255,255,255];
+	colorMap['11'] = ['Red',255,0,0];
+	colorMap['12'] = ['Orange',255,180,0];
+	colorMap['13'] = ['Yellow',255,255,0];
+	colorMap['14'] = ['Green',0,255,0];
+	colorMap['15'] = ['Blue',0,0,255];
+	colorMap['16'] = ['Indigo',0,255,255];
+	colorMap['17'] = ['Violet',100,0,200];
+
 	whiteLibrary = new Array();
 	// whiteLibrary['Motion-1'] = soundC11;
 	// whiteLibrary['Distance-1'] = soundC13;
@@ -377,7 +379,7 @@ function setup() {
 	elapsed = millis();
 
 	reverb = new p5.Reverb();
-	
+
 	offset = 0;
 	noOffset = true;
 
@@ -438,7 +440,7 @@ function draw() {
 							offset = millis() - delay;
 							noOffset = false;
 						}
-						
+
 						nextSound = new SoundToPlay(entry, delay);
 						if (delay > 0) {
 							soundQueue.push(nextSound);

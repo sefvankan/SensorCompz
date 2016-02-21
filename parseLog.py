@@ -15,7 +15,7 @@ stopLine = ""
 
 def initSensorMap():
 	sensorMap = dict()
-	
+
 	# Sherri
 	sensorMap['1'] = 'Distance'
 	# Jeff
@@ -24,12 +24,15 @@ def initSensorMap():
 	sensorMap['3'] = 'Distance'
 	# Dave
 	sensorMap['4'] = 'Distance'
+	# Goldfeather
+	sensorMap['5'] = 'Distance'
 	# Layla
 	sensorMap['21'] = 'Color'
+	sensorMap['111'] = 'Color' #alternate
 	# DLN
 	sensorMap['31'] = 'Sound'
 
-	
+
 	# Other ones
 
 	return sensorMap
