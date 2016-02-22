@@ -23,6 +23,7 @@ var previousColor;
 // to serve as a hashmap with key: ID; value: sound files
 var displayVideo;
 var colorMap;
+var videoMap;
 var soundLibrary;
 var whiteLibrary;
 var grayLibrary;
@@ -172,7 +173,17 @@ function determineOutput(trigger) {
 
 function changePalette(colorValue) {
 	var colorEntry = colorMap[colorValue];
+	// // displayVideo.loop();
+	// imageMode(CENTER);
+	// image(displayVideo,700,450);
+	console.log('hi?')
 	background(colorEntry[1],colorEntry[2],colorEntry[3]);
+	var videoString = "videos/" + colorEntry[0] + "_1.webm"
+	displayVideo = createVideo([videoString]);
+	displayVideo.hide();
+	displayVideo.loop();
+	image(displayVideo,960,540);
+
 }
 
 function outputColor(id, colorValue) {
@@ -182,6 +193,7 @@ function outputColor(id, colorValue) {
 			currentColor = colorValue;
 			//console.log("COLOR CHANGE WUSSUP:  "+newColor);
 			changePalette(colorValue);
+
 		}
 	}
 	// reverb.process(soundLibrary['Color'+'-'+id], rgb/50, rgb/50);
@@ -307,15 +319,29 @@ function preload() {
 	// whiteLibrary['Color-1'] = soundCp21;
 
 	colorMap = new Array();
+
 	colorMap['0'] = ['Black',0,0,0];
 	colorMap['1'] = ['White',255,255,255];
-	colorMap['11'] = ['Red',255,0,0];
-	colorMap['12'] = ['Orange',255,180,0];
-	colorMap['13'] = ['Yellow',255,255,0];
-	colorMap['14'] = ['Green',0,255,0];
-	colorMap['15'] = ['Blue',0,0,255];
-	colorMap['16'] = ['Blue',0,0,255];
-	colorMap['17'] = ['Violet',100,0,200];
+	colorMap['11'] = ['Red',200, 20, 20];
+	colorMap['12'] = ['Orange',248, 171, 38];
+	colorMap['13'] = ['Yellow',239, 242, 3];
+	colorMap['14'] = ['Green',72, 199, 51];
+	colorMap['15'] = ['Blue',51,58,200];
+	colorMap['16'] = ['Blue',51,58,200];
+	colorMap['17'] = ['Violet',102,36,163];
+
+	// videoMap['0'] = [createVideo(['videos/videosample.webm'])];
+	// videoMap['1'] = [createVideo(['videos/videosample.webm'])];
+	// videoMap['11'] = [createVideo(['videos/videosample.webm'])];
+	// videoMap['12'] = [createVideo(['videos/videosample.webm'])];
+	// videoMap['13'] = [createVideo(['videos/videosample.webm'])];
+
+	// videoMap['14'] = [createVideo(['videos/videosample.webm'])];
+	// videoMap['15'] = [createVideo(['videos/videosample.webm'])];
+	// videoMap['16'] = [createVideo(['videos/videosample.webm'])];
+	// videoMap['17'] = [createVideo(['videos/videosample.webm'])];
+
+	//color videos
 
 	whiteLibrary['Distance-1'] = [sandmanLongCmp11, sandmanShortCmp11];
 	whiteLibrary['Distance-2'] = [sandmanLongCmp12, sandmanShortCmp12];
@@ -342,8 +368,16 @@ function preload() {
 	blackLibrary['Distance-4'] = soundG21;
 	blackLibrary['Color-1'] = soundG11;
 
-	displayVideo = createVideo(['videos/videosample.webm']);
+// displayVideo3 = createVideo(['videos/videosample.webm']);
+// displayVideo4 = createVideo(['videos/videosample.webm']);
+// displayVideo5 = createVideo(['videos/videosample.webm']);
+	// displayVideo2 = createVideo(['videos/videosample.webm']);
+	// displayVideo2.hide();
+	// displayVideo2.pause();
 
+	displayVideo = createVideo(['videos/violet_1.webm']);
+	displayVideo.hide();
+	displayVideo.loop();
 
 	belair = loadSound('belair.mp3');
 }
@@ -376,10 +410,8 @@ function setup() {
 	prevEntry = "";
 
 	soundQueue = [];
-	displayVideo.loop();
-	displayVideo.hide();
 	imageMode(CENTER);
-	image(displayVideo,700,450);
+	image(displayVideo,960,540);
 	loop();
 }
 
@@ -403,7 +435,7 @@ function draw() {
 	if (millis() - elapsed >= wait) {
 
 		elapsed = millis();
-		image(displayVideo,700,450);
+		image(displayVideo,960,540);
 
 		var xmlhttp = new XMLHttpRequest();
 		var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
@@ -449,4 +481,5 @@ function draw() {
 		xmlhttp.send();
 	}
 	displayVideo.loop();
+	image(displayVideo,960,540);
 }
