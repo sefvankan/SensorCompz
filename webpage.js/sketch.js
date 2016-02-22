@@ -961,7 +961,7 @@ function draw() {
 		image(displayVideo,960,540);
 
 		var xmlhttp = new XMLHttpRequest();
-		var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
+		var url = 'http://127.0.0.1:8000/SensorCompz/webpage.js/logFileUpdating.txt';
 		var logFile;
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
