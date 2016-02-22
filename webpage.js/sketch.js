@@ -408,7 +408,7 @@ function changePalette(colorValue) {
 			break;
 	}
 
-	var videoString = "videos/" + colorEntry[0] + "_1.webm"
+	var videoString = "videos/mini/" + colorEntry[0] + "_1.webm"
 	displayVideo = createVideo([videoString]);
 	displayVideo.hide();
 	displayVideo.loop();
@@ -529,7 +529,7 @@ function preload() {
 	Bfmin_14_elevator = loadSound('sounds/elevator/Bfmin/Bfmin_1-4_elevator.mp3');
 	Bfmin_15_elevator = loadSound('sounds/elevator/Bfmin/Bfmin_1-5_elevator.mp3');
 	Bfmin_21_elevator = loadSound('sounds/elevator/Bfmin/Bfmin_2-1_elevator.mp3');
-	
+
 	Cmaj_11_elevator = loadSound('sounds/elevator/Cmaj/Cmaj_1-1_elevator.mp3');
 	Cmaj_12_elevator = loadSound('sounds/elevator/Cmaj/Cmaj_1-2_elevator.mp3');
 	Cmaj_13_elevator = loadSound('sounds/elevator/Cmaj/Cmaj_1-3_elevator.mp3');
@@ -588,7 +588,7 @@ function preload() {
 	Bfmin_14_left = loadSound('sounds/left/Bfmin/Bfmin_1-4_left.mp3');
 	Bfmin_15_left = loadSound('sounds/left/Bfmin/Bfmin_1-5_left.mp3');
 	Bfmin_21_left = loadSound('sounds/left/Bfmin/Bfmin_2-1_left.mp3');
-	
+
 	Cmaj_11_left = loadSound('sounds/left/Cmaj/Cmaj_1-1_left.mp3');
 	Cmaj_12_left = loadSound('sounds/left/Cmaj/Cmaj_1-2_left.mp3');
 	Cmaj_13_left = loadSound('sounds/left/Cmaj/Cmaj_1-3_left.mp3');
@@ -646,7 +646,7 @@ function preload() {
 	Bfmin_14_right = loadSound('sounds/right/Bfmin/Bfmin_1-4_right.mp3');
 	Bfmin_15_right = loadSound('sounds/right/Bfmin/Bfmin_1-5_right.mp3');
 	Bfmin_21_right = loadSound('sounds/right/Bfmin/Bfmin_2-1_right.mp3');
-	
+
 	Cmaj_11_right = loadSound('sounds/right/Cmaj/Cmaj_1-1_right.mp3');
 	Cmaj_12_right = loadSound('sounds/right/Cmaj/Cmaj_1-2_right.mp3');
 	Cmaj_13_right = loadSound('sounds/right/Cmaj/Cmaj_1-3_right.mp3');
@@ -705,7 +705,7 @@ function preload() {
 	Bfmin_14_wave = loadSound('sounds/wave/Bfmin/Bfmin_1-4_wave.mp3');
 	Bfmin_15_wave = loadSound('sounds/wave/Bfmin/Bfmin_1-5_wave.mp3');
 	Bfmin_21_wave = loadSound('sounds/wave/Bfmin/Bfmin_2-1_wave.mp3');
-	
+
 	Cmaj_11_wave = loadSound('sounds/wave/Cmaj/Cmaj_1-1_wave.mp3');
 	Cmaj_12_wave = loadSound('sounds/wave/Cmaj/Cmaj_1-2_wave.mp3');
 	Cmaj_13_wave = loadSound('sounds/wave/Cmaj/Cmaj_1-3_wave.mp3');
@@ -961,7 +961,11 @@ function draw() {
 		image(displayVideo,960,540);
 
 		var xmlhttp = new XMLHttpRequest();
+		// For python webhosting
 		var url = 'http://127.0.0.1:8000/SensorCompz/webpage.js/logFileUpdating.txt';
+		// For MAMP development
+		// var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
+
 		var logFile;
 		xmlhttp.onreadystatechange = function() {
 			if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
