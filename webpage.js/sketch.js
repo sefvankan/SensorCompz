@@ -444,9 +444,18 @@ function outputColor(id, colorValue) {
 			var colorEntry = colorMap[colorValue];
 			//console.log("COLOR CHANGE WUSSUP:  "+newColor);
 			changePalette(colorEntry);
+			soundLibrary['Distance-2'][0].play();
+			soundLibrary['Distance-2'][5].play();
+			soundLibrary['Distance-3'][0].play();
+			soundLibrary['Distance-3'][5].play();
+			soundLibrary['Distance-4'][0].play();
+			soundLibrary['Distance-4'][5].play();
+			soundLibrary['Distance-5'][0].play();
+			soundLibrary['Distance-5'][5].play();
 			//image(displayImage,960,540);
-			var toPlay = colorEntry[5];
-			toPlay.play();
+			//var toPlay = colorEntry[5];
+			//toPlay.play();
+
 		}
 	}
 	// reverb.process(rary['Color'+'-'+id], rgb/50, rgb/50);
