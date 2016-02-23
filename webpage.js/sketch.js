@@ -1009,9 +1009,9 @@ function draw() {
 
 		var xmlhttp = new XMLHttpRequest();
 		// For python webhosting
-	//	var url = 'http://127.0.0.1:8000/SensorCompz/webpage.js/logFileUpdating.txt';
+		var url = 'http://127.0.0.1:8000/SensorCompz/webpage.js/logFileUpdating.txt';
 		// For MAMP development
-		 var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
+		 //var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
 
 		var logFile;
 		xmlhttp.onreadystatechange = function() {
