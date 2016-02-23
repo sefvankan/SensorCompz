@@ -7,7 +7,6 @@ import datetime
 from collections import deque
 import os
 import json
-import requests
 
 # global variable
 stopTime = datetime.datetime.now().strftime("%H:%M:%S:%f")[:-3]
