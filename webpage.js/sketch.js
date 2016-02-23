@@ -213,6 +213,14 @@ var Gmin_13_wave;
 var Gmin_14_wave;
 var Gmin_15_wave;
 var Gmin_21_wave;
+var whiteSound;
+var blackSound;
+var redSound;
+var orangeSound;
+var yellowSound;
+var greenSound;
+var blueSound;
+var violetSound;
 
 var thunder_low;
 var thunder_med;
@@ -258,14 +266,14 @@ var thunderSounds;
 // to serve as a hashmap with key: ID; value: sound files
 var displayImage;
 var colorMap;
-var black_image;
-var white_image;
-var red_image;
-var orange_image;
-var yellow_image;
-var green_image;
-var blue_image;
-var violet_image
+var blackImage;
+var whiteImage;
+var redImage;
+var orangeImage;
+var yellowImage;
+var greenImage;
+var blueImage;
+var violetImage
 var videoMap;
 var soundLibrary;
 var whiteLibrary;
@@ -391,8 +399,7 @@ function determineOutput(trigger) {
 	}
 }
 
-function changePalette(colorValue) {
-	var colorEntry = colorMap[colorValue];
+function changePalette(colorEntry) {
 	// // displayVideo.loop();
 	// imageMode(CENTER);
 	// image(displayVideo,700,450);
@@ -424,7 +431,7 @@ function changePalette(colorValue) {
 			break;
 	}
 	//displayImage.pause();
-	displayImage = colorEntry[0];
+	displayImage = colorEntry[4];
 	image(displayImage, 960, 540);
 	//displayImage.play();
 
@@ -434,12 +441,15 @@ function outputColor(id, colorValue) {
 	if(colorValue!='16') {
 		if(colorValue != currentColor){
 			currentColor = colorValue;
+			var colorEntry = colorMap[colorValue];
 			//console.log("COLOR CHANGE WUSSUP:  "+newColor);
-			changePalette(colorValue);
+			changePalette(colorEntry);
 			//image(displayImage,960,540);
+			var toPlay = colorEntry[5];
+			toPlay.play();
 		}
 	}
-	// reverb.process(soundLibrary['Color'+'-'+id], rgb/50, rgb/50);
+	// reverb.process(rary['Color'+'-'+id], rgb/50, rgb/50);
 	//soundLibrary['Color'+'-'+id].play();
 }
 
@@ -538,6 +548,15 @@ function preload() {
 	thunder_high = loadSound('sounds/thunder/thunder_high.mp3');
 
 	// Load a soundfile from the /data folder of the sketch and play it back
+
+	whiteSound = loadSound('sounds/color/white_sound.mp3');
+	blackSound = loadSound('sounds/color/black_sound.mp3');
+	redSound = loadSound('sounds/color/red_sound.mp3');
+	orangeSound = loadSound('sounds/color/orange_sound.mp3');
+	yellowSound = loadSound('sounds/color/yellow_sound.mp3');
+	greenSound = loadSound('sounds/color/green_sound.mp3');
+	blueSound = loadSound('sounds/color/blue_sound.mp3');
+	violetSound = loadSound('sounds/color/violet_sound.mp3');
 
 	Bfmin_11_elevator = loadSound('sounds/elevator/Bfmin/Bfmin_1-1_elevator.mp3');
 	Bfmin_12_elevator = loadSound('sounds/elevator/Bfmin/Bfmin_1-2_elevator.mp3');
@@ -884,26 +903,25 @@ function preload() {
 
 	colorMap = new Array();
 
-	black_image = loadGif("videos/gif/black_1.gif");
+	blackImage = loadGif("videos/gif/black_1.gif");
+	whiteImage = loadGif("videos/gif/white_1.gif");
+	redImage = loadGif("videos/gif/red_1.gif");
+	orangeImage = loadGif("videos/gif/orange_1.gif");
+	yellowImage = loadGif("videos/gif/yellow_1.gif");
+	greenImage = loadGif("videos/gif/green_1.gif");
+	blueImage = loadGif("videos/gif/blue_1.gif");
+	violetImage = loadGif("videos/gif/violet_1.gif");
 
-	white_image = loadGif("videos/gif/white_1.gif");
-	red_image = loadGif("videos/gif/red_1.gif");
-	orange_image = loadGif("videos/gif/orange_1.gif");
-	yellow_image = loadGif("videos/gif/yellow_1.gif");
-	green_image = loadGif("videos/gif/green_1.gif");
-	blue_image = loadGif("videos/gif/blue_1.gif");
-	violet_image = loadGif("videos/gif/violet_1.gif");
 
-
-	colorMap['0'] = [black_image,0,0,0];
-	colorMap['1'] = [white_image,255,255,255];
-	colorMap['11'] = [red_image,200, 20, 20];
-	colorMap['12'] = [orange_image,248, 171];
-	colorMap['13'] = [yellow_image,239, 242, 3];
-	colorMap['14'] = [green_image,72, 199, 51];
-	colorMap['15'] = [blue_image,51,58,200];
-	colorMap['16'] = [blue_image,51,58,200];
-	colorMap['17'] = [violet_image,102,36,163];
+	colorMap['0'] = ['Black',0,0,0,blackImage,blackSound];
+	colorMap['1'] = ['White',255,255,255,whiteImage,whiteSound];
+	colorMap['11'] = ['Red',200, 20, 20,redImage,redSound];
+	colorMap['12'] = ['Orange',248, 171,0,orangeImage,orangeSound];
+	colorMap['13'] = ['Yellow',239, 242, 3,yellowImage,yellowSound];
+	colorMap['14'] = ['Green',72, 199, 51,greenImage,greenSound];
+	colorMap['15'] = ['Blue',51,58,200,blueImage,blueSound];
+	colorMap['16'] = ['Blue',51,58,200,blueImage,blueSound];
+	colorMap['17'] = ['Violet',102,36,163,violetImage,violetSound];
 
 	// videoMap['0'] = [createVideo(['videos/videosample.webm'])];
 	// videoMap['1'] = [createVideo(['videos/videosample.webm'])];
@@ -955,7 +973,7 @@ function setup() {
 	prevEntry = "";
 
 	soundQueue = [];
-	displayImage = white_image;
+	displayImage = whiteImage;
 	image(displayImage,960,540);
 	imageMode(CENTER);
 	console.log("done setup");
