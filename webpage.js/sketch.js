@@ -256,8 +256,16 @@ var waveGmajSounds;
 var thunderSounds;
 
 // to serve as a hashmap with key: ID; value: sound files
-var displayVideo;
+var displayImage;
 var colorMap;
+var black_image;
+var white_image;
+var red_image;
+var orange_image;
+var yellow_image;
+var green_image;
+var blue_image;
+var violet_image
 var videoMap;
 var soundLibrary;
 var whiteLibrary;
@@ -415,12 +423,10 @@ function changePalette(colorValue) {
 			soundLibrary = violetLibrary;
 			break;
 	}
-
-	var videoString = "videos/mini/" + colorEntry[0] + "_1.webm"
-	displayVideo = createVideo([videoString]);
-	displayVideo.hide();
-	displayVideo.loop();
-	image(displayVideo,960,540);
+	//displayImage.pause();
+	displayImage = colorEntry[0];
+	image(displayImage, 960, 540);
+	//displayImage.play();
 
 }
 
@@ -430,7 +436,7 @@ function outputColor(id, colorValue) {
 			currentColor = colorValue;
 			//console.log("COLOR CHANGE WUSSUP:  "+newColor);
 			changePalette(colorValue);
-
+			//image(displayImage,960,540);
 		}
 	}
 	// reverb.process(soundLibrary['Color'+'-'+id], rgb/50, rgb/50);
@@ -878,15 +884,26 @@ function preload() {
 
 	colorMap = new Array();
 
-	colorMap['0'] = ['Black',0,0,0];
-	colorMap['1'] = ['White',255,255,255];
-	colorMap['11'] = ['Red',200, 20, 20];
-	colorMap['12'] = ['Orange',248, 171, 38];
-	colorMap['13'] = ['Yellow',239, 242, 3];
-	colorMap['14'] = ['Green',72, 199, 51];
-	colorMap['15'] = ['Blue',51,58,200];
-	colorMap['16'] = ['Blue',51,58,200];
-	colorMap['17'] = ['Violet',102,36,163];
+	black_image = loadGif("videos/gif/black_1.gif");
+
+	white_image = loadGif("videos/gif/white_1.gif");
+	red_image = loadGif("videos/gif/red_1.gif");
+	orange_image = loadGif("videos/gif/orange_1.gif");
+	yellow_image = loadGif("videos/gif/yellow_1.gif");
+	green_image = loadGif("videos/gif/green_1.gif");
+	blue_image = loadGif("videos/gif/blue_1.gif");
+	violet_image = loadGif("videos/gif/violet_1.gif");
+
+
+	colorMap['0'] = [black_image,0,0,0];
+	colorMap['1'] = [white_image,255,255,255];
+	colorMap['11'] = [red_image,200, 20, 20];
+	colorMap['12'] = [orange_image,248, 171];
+	colorMap['13'] = [yellow_image,239, 242, 3];
+	colorMap['14'] = [green_image,72, 199, 51];
+	colorMap['15'] = [blue_image,51,58,200];
+	colorMap['16'] = [blue_image,51,58,200];
+	colorMap['17'] = [violet_image,102,36,163];
 
 	// videoMap['0'] = [createVideo(['videos/videosample.webm'])];
 	// videoMap['1'] = [createVideo(['videos/videosample.webm'])];
@@ -906,10 +923,6 @@ function preload() {
 	// displayVideo2 = createVideo(['videos/videosample.webm']);
 	// displayVideo2.hide();
 	// displayVideo2.pause();
-
-	displayVideo = createVideo(['videos/violet_1.webm']);
-	displayVideo.hide();
-	displayVideo.loop();
 	console.log("done preloading");
 }
 
@@ -942,8 +955,9 @@ function setup() {
 	prevEntry = "";
 
 	soundQueue = [];
+	displayImage = white_image;
+	image(displayImage,960,540);
 	imageMode(CENTER);
-	image(displayVideo,960,540);
 	console.log("done setup");
 	loop();
 }
@@ -969,7 +983,6 @@ function draw() {
 	if (millis() - elapsed >= wait) {
 
 		elapsed = millis();
-		image(displayVideo,960,540);
 
 		var xmlhttp = new XMLHttpRequest();
 		// For python webhosting
@@ -1018,6 +1031,7 @@ function draw() {
 		xmlhttp.open("GET", url, true);
 		xmlhttp.send();
 	}
-	displayVideo.loop();
-	image(displayVideo,960,540);
+	if (displayImage.loaded()) {
+    image(displayImage, 960, 540);
+  }
 }
