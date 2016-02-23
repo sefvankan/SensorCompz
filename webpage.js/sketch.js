@@ -356,11 +356,20 @@ function getTime(timeString) {
 	return new Time(h, m, s, ms);
 }
 
+function reportEntryTime(trigger) {
+	var now = new Date();
+	var nowTime = new dateConvert(now);
+	console.log("time now is: ");
+	console.log(nowTime);
+	console.log("entry tripped was: ");
+	console.log(trigger.getEntry())
+}
+
 // trigger is a SoundToPlay object
 function determineOutput(trigger) {
 	switch (trigger.getSensor()) {
 		case 'Distance':
-			outputDistance(trigger.getID(), trigger.getValue());
+			outputDistance(trigger.getID(), trigger.getValue(), trigger);
 			break;
 		case 'Color':
 			outputColor(trigger.getID(), trigger.getValue());
@@ -369,7 +378,7 @@ function determineOutput(trigger) {
 			outputMotion(trigger.getID());
 			break;
 		case 'Sound':
-			outputSound(trigger.getID(), trigger.getValue());
+			outputSound(trigger.getID(), trigger.getValue(), trigger);
 			break;
 	}
 }
@@ -379,7 +388,6 @@ function changePalette(colorValue) {
 	// // displayVideo.loop();
 	// imageMode(CENTER);
 	// image(displayVideo,700,450);
-	console.log('hi?')
 	background(colorEntry[1],colorEntry[2],colorEntry[3]);
 	switch (colorEntry[0]) {
 		case 'Black':
@@ -417,7 +425,6 @@ function changePalette(colorValue) {
 }
 
 function outputColor(id, colorValue) {
-	console.log(colorValue)
 	if(colorValue!='16') {
 		if(colorValue != currentColor){
 			currentColor = colorValue;
@@ -441,13 +448,13 @@ function determinePan(sound, distance) {
 	return SoundToPlay
 }
 
-function outputDistance(id, distance) {
+function outputDistance(id, distance, trigger) {
 	distance = int(distance)
 	if (distance == 0) {
-		console.log("outttahereeee");
+		return;
+	} else if (id == 4 && (distance == 198 || distance == 199 || distance == 197)) {
 		return;
 	}
-	console.log("got here");
 	var baseline;
 	switch (id) {
 		case '2':
@@ -487,15 +494,16 @@ function outputDistance(id, distance) {
 	} else {
 		return;
 	}
-
-	if (!toPlay.isPlaying()) {
-		toPlay.play();
-	}
+	reportEntryTime(trigger);
+	toPlay.play();
+	// if (!toPlay.isPlaying()) {
+	// 	toPlay.play();
+	// }
 }
 
-function outputSound(id, volume) {
+function outputSound(id, volume, trigger) {
 
-	var diff = int(volume) - 160;
+	var diff = int(volume) - 155;
 
 	if (diff <= 0) {
 		return;
@@ -510,8 +518,10 @@ function outputSound(id, volume) {
 		thunder_med.play();
 	} else {
 		console.log("playing high sound")
+		thunder_med.play();
 		thunder_high.play();
 	}
+	reportEntryTime(trigger);
 }
 
 function preload() {
@@ -913,7 +923,7 @@ function setup() {
 	now = new Date();
 	startTime = new dateConvert(now);
 
-	createCanvas(1400,900);
+	createCanvas(1920,1080);
 	background(255);
 	textSize(32);
 	text("word", 10, 30);
@@ -950,6 +960,7 @@ function draw() {
 			// shift off sound from queue
 			var toPlay = soundQueue.shift();
 			// play the sound
+			// console.log(toPlay.getEntry());
 			determineOutput(toPlay);
 		}
 	}
@@ -979,7 +990,7 @@ function draw() {
 						var entrySensor = entry[1];
 						var entryID = entry[2];
 						var entryValue = entry[3];
-						console.log(entry)
+						// console.log(entry)
 
 						var delay = determineDelay(startTime,entryTime);
 
