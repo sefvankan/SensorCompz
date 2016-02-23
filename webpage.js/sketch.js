@@ -445,13 +445,9 @@ function outputColor(id, colorValue) {
 			//console.log("COLOR CHANGE WUSSUP:  "+newColor);
 			changePalette(colorEntry);
 			soundLibrary['Distance-2'][0].play();
-			soundLibrary['Distance-2'][5].play();
-			soundLibrary['Distance-3'][0].play();
-			soundLibrary['Distance-3'][5].play();
-			soundLibrary['Distance-4'][0].play();
-			soundLibrary['Distance-4'][5].play();
-			soundLibrary['Distance-5'][0].play();
-			soundLibrary['Distance-5'][5].play();
+			soundLibrary['Distance-3'][2].play();
+			soundLibrary['Distance-4'][4].play();
+			soundLibrary['Distance-5'][1].play();
 			//image(displayImage,960,540);
 			//var toPlay = colorEntry[5];
 			//toPlay.play();
@@ -1013,9 +1009,9 @@ function draw() {
 
 		var xmlhttp = new XMLHttpRequest();
 		// For python webhosting
-		var url = 'http://127.0.0.1:8000/SensorCompz/webpage.js/logFileUpdating.txt';
+	//	var url = 'http://127.0.0.1:8000/SensorCompz/webpage.js/logFileUpdating.txt';
 		// For MAMP development
-		// var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
+		 var url = 'http://localhost:8888/SensorCompz/webpage.js/logFileUpdating.txt';
 
 		var logFile;
 		xmlhttp.onreadystatechange = function() {
