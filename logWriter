@@ -1,0 +1,22 @@
+#!/usr/bin/expect -f
+
+set host root@137.22.30.188
+set count 5;
+spawn ssh -nNf -o ControlMaster=yes -o ControlPath="~/.ssh/ctl/%L-%r@%h:%p" -o ControlPersist=10m $host
+
+expect "assword:"
+send "bird63hole\r"
+interact
+spawn python parseLog.py
+
+expect "assword:"
+send "bird63hole\r"
+interact
+
+while {$count > 0 } {
+		expect "assword:"
+		send "bird63hole\r"
+		interact
+}
+
+ssh -O exit -o ControlPath="~/.ssh/ctl/%L-%r@%h:%p" root@137.22.30.188
