@@ -756,7 +756,6 @@ div.art-header
    top: 0;
    width:100%;
    height: 260px;
-   background-image: url('images/header.jpg');
    background-repeat: no-repeat;
    background-position: center left;
 }
@@ -766,13 +765,13 @@ div.art-header
 div.art-headerobject
 {
    display: block;
-   left: 63%;
-   margin-left: -230px;
-   position: absolute;
+/*   left: 63%;
+*//*   margin-left: -230px;
+*/   position: absolute;
    top: 0;
-   width: 366px;
+   width: 100%;
    height: 260px;
-   background-image: url('images/header-object.png');
+   background-image: url('images/rose.png');
 }
 /* end HeaderObject */
 
@@ -805,7 +804,7 @@ div.art-logo
    text-transform: uppercase;
    padding: 0;
    margin: 0;
-   color: #000000 !important;
+   color: white !important;
 }
 
 .art-logo-text
@@ -817,7 +816,7 @@ div.art-logo
    text-transform: uppercase;
    padding: 0;
    margin: 0;
-   color: #3B3E38 !important;
+   color: white !important;
 }
 .art-logo-text a,
 .art-logo-text a:link,
@@ -1024,7 +1023,7 @@ span.art-button-wrapper input
    line-height:26px;
 }
 .art-vmenublockheader:before, .art-vmenublockheader:after{
-   background-image: url('images/vmenublockheader.png');
+   background-image: url('images/comps_layout');
 }
 .art-vmenublockheader:before{
    right: 0;
@@ -1320,7 +1319,7 @@ div.art-block img
    line-height:26px;
 }
 .art-blockheader:before, .art-blockheader:after{
-   background-image: url('images/blockheader.png');
+   background-image: url('images/comps_layout.png');
 }
 .art-blockheader:before{
    right: 0;
