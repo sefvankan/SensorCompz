@@ -8,5 +8,6 @@ ssh -nNf -o ControlMaster=yes -o ControlPath="~/.ssh/ctl/%L-%r@%h:%p" -o Control
 # interact
 
 python parseLog.py
+echo "hello"
 
 ssh -O exit -o ControlPath="~/.ssh/ctl/%L-%r@%h:%p" root@137.22.30.188

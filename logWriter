@@ -9,10 +9,6 @@ send "bird63hole\r"
 interact
 spawn python parseLog.py
 
-expect "assword:"
-send "bird63hole\r"
-interact
-
 while {$count > 0 } {
 		expect "assword:"
 		send "bird63hole\r"

@@ -444,10 +444,10 @@ function outputColor(id, colorValue) {
 			var colorEntry = colorMap[colorValue];
 			//console.log("COLOR CHANGE WUSSUP:  "+newColor);
 			changePalette(colorEntry);
-			soundLibrary['Distance-2'][0].play();
-			soundLibrary['Distance-3'][2].play();
-			soundLibrary['Distance-4'][4].play();
-			soundLibrary['Distance-5'][1].play();
+			// soundLibrary['Distance-2'][0].play();
+			// soundLibrary['Distance-3'][2].play();
+			// soundLibrary['Distance-4'][4].play();
+			// soundLibrary['Distance-5'][1].play();
 			//image(displayImage,960,540);
 			//var toPlay = colorEntry[5];
 			//toPlay.play();

@@ -1,0 +1,344 @@
+/* begin Page */
+
+/* Created by Artisteer v3.1.0.48375 */
+
+#art-page-background-glare{
+   display: none;
+}
+.cleared {
+   width:1px;
+}
+/* Start Box */
+.art-box, .art-box-body {
+   zoom:1;
+}
+/* End Box */
+/* Start Bar */
+.art-bar{
+   zoom:1;
+}
+/* End Bar */
+/* end Page */
+
+/* begin Box, Sheet */
+.art-sheet {
+   background:#FFFFFF;
+}
+/* end Box, Sheet */
+
+/* begin Menu */
+ul.art-hmenu, ul.art-hmenu ul, ul.art-hmenu li, ul.art-hmenu a {
+   zoom:1;
+}
+.art-hmenu li.art-hmenuhover{
+   z-index: 10000;
+}
+.art-hmenu .art-hmenuhoverUL{
+   visibility: visible;
+   top: 100%;
+   left: 0;
+}
+.art-hmenu .art-hmenuhoverUL .art-hmenuhoverUL{
+   top: 0;
+   left: 100%;
+}
+.art-hmenu ul li {
+   float: left !important;
+   clear: both;
+   width: 100%;
+}
+.art-nav
+{
+   zoom: 1;
+   height: 42px;
+   background:#E0E0DF;
+}
+
+/* end Menu */
+
+/* begin MenuItem */
+.art-hmenu a 
+{
+   display:inline-block;
+   color: #35372F;
+   padding: 0 40px;
+   line-height: 42px;
+   text-align: center;
+}
+
+.art-hmenu a.active 
+{
+   color: #080906;
+   background-color:#8BA168;
+}
+
+.art-hmenu a:hover, .art-hmenuhoverA,  .art-hmenuhover a 
+{
+   color: #DCDDDA;
+   background-color:#62665C;
+}
+
+/* end MenuItem */
+
+/* begin MenuSeparator */
+ul.art-hmenu li {
+   margin-left:expression(this.previousSibling==null?'0':'1px');
+}
+ul.art-hmenu li li{
+   margin-left:0;
+}
+
+span.art-hmenu-separator
+{
+   position:absolute;
+   display: block;
+   top:0;
+   left:  -1px;
+   width: 1px;
+   height: 42px;
+   background: url('images/menuseparator.png') center center no-repeat;
+}
+/* end MenuSeparator */
+
+/* begin MenuSubItem */
+.art-hmenu ul a 
+{
+   color: #000000 !important;
+   float: left;
+}
+
+.art-hmenu ul a:hover, .art-hmenu ul .art-hmenuhover .art-hmenuhoverA 
+{
+   color: #000000 !important;
+   background-position: left bottom;
+   border-color: #515E3B;
+   border-top-width: 1px !important;
+}
+
+/* end MenuSubItem */
+
+/* begin Header */
+.art-header {
+   zoom:expression(runtimeStyle.zoom=1,insertBefore(document.createElement('div'),firstChild).className='art-header-jpeg');
+   z-index: 1;
+}
+
+.art-header-jpeg
+{
+   position: absolute;
+   z-index:-1;
+   top: 0;
+   width:100%;
+   height: 260px;
+   background-image: url('images/header.jpg');
+   background-repeat: no-repeat;
+   background-position: center left;
+}
+/* end Header */
+
+/* begin HeaderObject */
+div.art-headerobject{
+   font-size: 1px;
+}
+/* end HeaderObject */
+
+/* begin Layout */
+.art-content-layout, .art-content-layout-row, .art-layout-cell 
+{
+   display: block;
+   zoom: 1;
+}
+.art-layout-cell
+{
+   position:relative;
+   float: left;
+   clear: right;
+}
+/* end Layout */
+
+/* begin Button */
+.art-button-wrapper{
+   zoom: 1;
+}
+.art-button-wrapper .art-button-l, .art-button-wrapper .art-button-r {
+   display: none;
+}
+.art-button-wrapper .art-button {
+   float: left;
+}
+/* end Button */
+
+/* begin Box, Block, VMenuBlock */
+.art-vmenublock {
+   background:#FFFFFF;
+}
+/* end Box, Block, VMenuBlock */
+
+/* begin BlockHeader, VMenuBlockHeader */
+.art-vmenublockheader {
+   background:#989C91;
+}
+/* end BlockHeader, VMenuBlockHeader */
+
+/* begin Box, Box, VMenuBlockContent */
+.art-vmenublockcontent {
+   background:#D4D6D1;
+}
+
+/* end Box, Box, VMenuBlockContent */
+
+/* begin VMenuItem */
+ul.art-vmenu, ul.art-vmenu ul, ul.art-vmenu li, ul.art-vmenu a
+{
+   position:relative;
+   zoom: 1;
+}
+
+ul.art-vmenu li {
+   z-index:0;
+   margin-top:expression(this.previousSibling==null?'0':'4px');
+}
+ul.art-vmenu ul{
+   margin-top:4px;
+   padding-bottom: 0;
+}
+
+ul.art-vmenu a 
+{
+   color: #484B44;
+   background-color:#D4D6D1;
+   padding: 0 10px 0 26px;
+   height: 34px;
+   line-height: 34px;
+}
+
+.art-vmenu a.active 
+{
+   color: #4B5837;
+   background-color:#D4D6D1;
+}
+
+ul.art-vmenu a:hover
+{
+   color: #171816;
+   background-color:#D4D6D1;
+}
+
+/* end VMenuItem */
+
+/* begin VMenuSubItem */
+ul.art-vmenu ul a {
+   color: #484B44 !important;
+}
+ul.art-vmenu li li {
+   padding-top:expression(this.previousSibling==null?'0':'0');
+   margin-top:expression(this.previousSibling==null?'0':'4px');
+}
+ 
+ul.art-vmenu ul ul {
+   margin-top:4px;
+}
+ul.art-vmenu ul a.active {
+   color: #434E31 !important;
+}
+ul.art-vmenu ul a:hover {
+   color: #484B44 !important;
+}	
+/* end VMenuSubItem */
+
+/* begin Box, Block */
+.art-block {
+   background:#FFFFFF;
+}
+/* end Box, Block */
+
+/* begin BlockHeader */
+.art-blockheader {
+   background:#718452;
+}
+/* end BlockHeader */
+
+/* begin Box, BlockContent */
+.art-blockcontent {
+   background:#FFFFFF;
+}
+.art-blockcontent-body ul li{
+   height: 1%;
+}
+
+/* end Box, BlockContent */
+
+/* begin Box, Post */
+.art-post {
+   background:#FFFFFF;
+}
+/* end Box, Post */
+
+/* begin PostIcons, PostHeaderIcons */
+.art-postheadericons span{
+   zoom: 1;
+}
+/* end PostIcons, PostHeaderIcons */
+
+/* begin PostBullets */
+.art-post ul li, .art-post ol ul li
+{
+   height: 1%;
+   padding-left: 14px;
+   /* makes "ul li" not to align behind the image if they are in the same line */
+  overflow-x: visible;
+   overflow-y: hidden;
+}
+
+.art-post ul ol li
+{
+   background: none;
+   padding-left: 0;
+   /* overrides overflow for "ul li" and sets the default value */
+  overflow: visible;
+}
+/* end PostBullets */
+
+/* begin PostMetadata, PostMetadataFooter */
+.art-postmetadatafooter
+{
+   zoom:1;
+   background:#FCFDFC;
+}
+/* end PostMetadata, PostMetadataFooter */
+
+/* begin PostIcons, PostFooterIcons */
+.art-postfootericons span{
+   zoom: 1;
+}
+/* end PostIcons, PostFooterIcons */
+
+/* begin Footer */
+.art-footer-body{
+   padding-right: 0;
+   zoom:1;
+}
+.art-footer{
+   zoom:1;
+   background:#B1B4AC;
+}
+
+.art-footer-text
+{
+   height: 31px;
+}
+
+.art-rss-tag-icon
+{
+   zoom: 1;
+   font-size: 1px;
+}
+
+/* end Footer */
+
+/* begin LayoutCell, content */
+.art-sidebar1 {
+   width: auto;
+}
+/* end LayoutCell, content */
+
